@@ -54,9 +54,11 @@ public class CamelSourceJMSITCase extends AbstractKafkaTest {
         LOG.info("JMS service running at {}", jmsService.getDefaultEndpoint());
     }
 
-    private boolean checkRecord(ConsumerRecord<String, String> record) {
+
+    private boolean checkRecord(ConsumerRecord<String, String> record, String regex) {
         LOG.debug("Received: {}", record.value());
         received++;
+        Assert.assertTrue("Unexpected message contents", record.value().matches(regex));
 
         if (received == expect) {
             return false;
@@ -85,7 +87,8 @@ public class CamelSourceJMSITCase extends AbstractKafkaTest {
 
             LOG.debug("Creating the consumer ...");
             KafkaClient<String, String> kafkaClient = new KafkaClient<>(getKafkaService().getBootstrapServers());
-            kafkaClient.consume(TestCommon.getDefaultTestTopic(this.getClass()), this::checkRecord);
+            kafkaClient.consume(TestCommon.getDefaultTestTopic(this.getClass()),
+                    (k) -> checkRecord(k, "^Test message [0-9]+"));
             LOG.debug("Created the consumer ...");
 
             Assert.assertEquals("Didn't process the expected amount of messages", received, expect);
@@ -117,7 +120,8 @@ public class CamelSourceJMSITCase extends AbstractKafkaTest {
 
             LOG.debug("Creating the consumer ...");
             KafkaClient<String, String> kafkaClient = new KafkaClient<>(getKafkaService().getBootstrapServers());
-            kafkaClient.consume(TestCommon.getDefaultTestTopic(this.getClass()) + "testIntSendReceive", this::checkRecord);
+            kafkaClient.consume(TestCommon.getDefaultTestTopic(this.getClass()) + "testIntSendReceive",
+                    (k) -> checkRecord(k, "[0-9]+"));
             LOG.debug("Created the consumer ...");
 
             Assert.assertEquals("Didn't process the expected amount of messages", received, expect);
