@@ -27,7 +27,7 @@
         <relativePath>../parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>camel-buildtools</artifactId>
+    <artifactId>buildtools</artifactId>
 
     <name>Camel-Kafka-Connector :: Buildtools</name>
     <description>The build tools for the Apache Camel Kafka Connect project</description>
