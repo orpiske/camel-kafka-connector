@@ -303,5 +303,16 @@
                 </plugins>
             </build>
         </profile>
+        <profile>
+            <id>assembly</id>
+            <activation>
+                <property>
+                    <name>!noassembly</name>
+                </property>
+            </activation>
+            <modules>
+                <module>apache-camel-kafka-connector</module>
+            </modules>
+        </profile>
     </profiles>
 </project>
