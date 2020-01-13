@@ -27,7 +27,7 @@
         <relativePath>../parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>camel-kafka-connector</artifactId>
+    <artifactId>core</artifactId>
     <packaging>jar</packaging>
 
     <name>Camel-Kafka-Connector :: Core</name>

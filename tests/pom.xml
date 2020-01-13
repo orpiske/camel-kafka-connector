@@ -42,7 +42,7 @@
     <dependencies>
         <dependency>
             <groupId>org.apache.camel.kafkaconnector</groupId>
-            <artifactId>camel-kafka-connector</artifactId>
+            <artifactId>core</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
