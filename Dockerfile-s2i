@@ -1,0 +1,11 @@
+FROM strimzi/kafka:latest-kafka-2.4.1
+USER root:root
+ARG CAMEL_KAFKA_CONNECTOR_VERSION
+ENV CAMEL_KAFKA_CONNECTOR_VERSION ${CAMEL_KAFKA_CONNECTOR_VERSION:-0.2.0-SNAPSHOT}
+ARG CONNECTOR_NAME
+ENV CONNECTOR_NAME ${CONNECTOR_NAME:-sjms2}
+COPY connectors/camel-${CONNECTOR_NAME}-kafka-connector/target/camel-${CONNECTOR_NAME}-kafka-connector-${CAMEL_KAFKA_CONNECTOR_VERSION}-package.tar.gz /
+RUN mkdir -p /opt/kafka/plugins && \
+    tar -xvf /camel-${CONNECTOR_NAME}-kafka-connector-${CAMEL_KAFKA_CONNECTOR_VERSION}-package.tar.gz -C /opt/kafka/plugins && \
+    rm /camel-${CONNECTOR_NAME}-kafka-connector-${CAMEL_KAFKA_CONNECTOR_VERSION}-package.tar.gz
+USER 1001
