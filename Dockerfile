@@ -30,6 +30,7 @@ RUN microdnf install -y java-1.8.0-openjdk-headless && \
 
 FROM camel-kafka-connector-base
 COPY --from=buildimg /root/build/kafka /opt/kafka
-COPY connectors/camel-${CONNECTOR_NAME}-kafka-connector/target/camel-${CONNECTOR_NAME}-kafka-connector-${CAMEL_KAFKA_CONNECTOR_VERSION}.jar /opt/kafka/libs/camel-kafka-connector/
+COPY connectors/camel-${CONNECTOR_NAME}-kafka-connector/target/camel-${CONNECTOR_NAME}-kafka-connector-${CAMEL_KAFKA_CONNECTOR_VERSION}.jar /opt/kafka/camel-kafka-connector/
 COPY connectors/camel-${CONNECTOR_NAME}-kafka-connector/target/camel-${CONNECTOR_NAME}-kafka-connector-${CAMEL_KAFKA_CONNECTOR_VERSION}-package/share/java/camel-${CONNECTOR_NAME}-kafka-connector/ /opt/kafka/libs
+RUN mv /opt/kafka/libs/camel-kafka-connector-${CAMEL_KAFKA_CONNECTOR_VERSION}.jar /opt/kafka/camel-kafka-connector/
 ENTRYPOINT ["sh", "-c", "/opt/run-connector.sh"]
