@@ -19,13 +19,15 @@ ENV CAMEL_KAFKA_CONNECTOR_VERSION ${CAMEL_KAFKA_CONNECTOR_VERSION:-0.0.1-SNAPSHO
 LABEL CAMEL_KAFKA_CONNECTOR_VERSION=${CAMEL_KAFKA_CONNECTOR_VERSION}
 ARG CONNECTOR_NAME
 ENV CONNECTOR_NAME ${CONNECTOR_NAME:-sjms2}
+ARG KAFKA_CONNECT_MODE
+ENV KAFKA_CONNECT_MODE ${KAFKA_CONNECT_MODE:-distributed}
 
 ENV KAFKA_HOME /opt/kafka/
 WORKDIR ${KAFKA_HOME}
 VOLUME ${KAFKA_HOME}
 RUN microdnf install -y java-1.8.0-openjdk-headless && \
     microdnf clean all && \
-    echo "\$KAFKA_HOME/bin/connect-standalone.sh \$KAFKA_HOME/custom-config/connect-standalone.properties \$KAFKA_HOME/custom-config/CamelConnector.properties" >> /opt/run-connector.sh && \
+    echo "\$KAFKA_HOME/bin/connect-${KAFKA_CONNECT_MODE}.sh \$KAFKA_HOME/custom-config/connect-${KAFKA_CONNECT_MODE}.properties \$KAFKA_HOME/custom-config/CamelConnector.properties" >> /opt/run-connector.sh && \
     chmod +x /opt/run-connector.sh
 
 FROM camel-kafka-connector-base
