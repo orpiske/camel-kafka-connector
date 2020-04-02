@@ -46,7 +46,7 @@
   <dependencySets>
     <dependencySet>
       <outputDirectory>share/java/${project.artifactId}</outputDirectory>
-      <useProjectArtifact>true</useProjectArtifact>
+      <useProjectArtifact>false</useProjectArtifact>
       <useTransitiveFiltering>true</useTransitiveFiltering>
       <excludes>
         <exclude>org.apache.kafka:connect-api</exclude>
