@@ -17,6 +17,7 @@
 
 package org.apache.camel.kafkaconnector.services.kafkaconnect;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -38,11 +39,18 @@ public class KafkaConnectEmbedded implements KafkaConnectService {
 
     }
 
+    private void convertProperty(Map<String, String> map, Object key, Object value) {
+        map.put(String.valueOf(key), String.valueOf(value));
+    }
+
     @Override
     public void initializeConnector(ConnectorPropertyFactory propertyFactory) throws ExecutionException, InterruptedException {
 
+        Map<String, String> configuredProperties = new HashMap<>();
 
-        this.cluster.start();
+        propertyFactory.getProperties().forEach((k, v) -> convertProperty(configuredProperties, k, v));
+
+        cluster.configureConnector("time", configuredProperties);
     }
 
     @Override
@@ -64,17 +72,22 @@ public class KafkaConnectEmbedded implements KafkaConnectService {
     public void start() {
         EmbeddedConnectCluster.Builder builder = new EmbeddedConnectCluster.Builder();
 
-        Properties props = new Properties();
-        props.put(StandaloneConfig.BOOTSTRAP_SERVERS_CONFIG,  "fuse-dev-02.tpb.lab.eng.brq.redhat.com:9092");
-        props.put(StandaloneConfig.KEY_CONVERTER_CLASS_CONFIG, "org.apache.kafka.connect.json.JsonConverter");
-        props.put(StandaloneConfig.VALUE_CONVERTER_CLASS_CONFIG, "org.apache.kafka.connect.json.JsonConverter");
-        props.put(StandaloneConfig.OFFSET_STORAGE_FILE_FILENAME_CONFIG, this.getClass().getResource("/").getPath() + "connect.offsets");
-        props.put(StandaloneConfig.OFFSET_COMMIT_INTERVAL_MS_CONFIG, "10000");
-        props.put(StandaloneConfig.PLUGIN_PATH_CONFIG, "");
-//        props.put(StandaloneConfig.LISTENERS_CONFIG, "http://localhost:9999");
+        Properties brokerProps = new Properties();
+        brokerProps.put("auto.create.topics.enable", String.valueOf(false));
+
+
+        Map<String, String> workerProps = new HashMap<>();
+        workerProps.put(StandaloneConfig.OFFSET_COMMIT_INTERVAL_MS_CONFIG, "10000");
 
         this.cluster = builder
-                .brokerProps(props)
+                .name("connect-cluster")
+                .numBrokers(1)
+                .numWorkers(1)
+                .brokerProps(brokerProps)
+                .workerProps(workerProps)
+                .maskExitProcedures(true)
                 .build();
+
+        cluster.start();
     }
 }
