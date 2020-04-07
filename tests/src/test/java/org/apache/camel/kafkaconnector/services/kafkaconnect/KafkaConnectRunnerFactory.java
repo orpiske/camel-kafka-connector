@@ -18,12 +18,28 @@
 package org.apache.camel.kafkaconnector.services.kafkaconnect;
 
 import org.apache.camel.kafkaconnector.services.kafka.KafkaService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class KafkaConnectRunnerFactory {
+    private static final Logger LOG = LoggerFactory.getLogger(KafkaConnectRunnerFactory.class);
+
     private KafkaConnectRunnerFactory() {
     }
 
     public static KafkaConnectService createService(KafkaService kafkaService) {
-        return new KafkaConnectRunnerService(kafkaService);
+        String kafkaRemote = System.getProperty("kafka-connect.instance.type");
+
+        if (kafkaRemote == null || kafkaRemote.equals("legacy-kafka-connect")) {
+            return new KafkaConnectRunnerService(kafkaService);
+        }
+
+
+        if (kafkaRemote.equals("kafka-native")) {
+            return new KafkaConnectEmbedded();
+        }
+
+        LOG.error("Invalid Kafka Connect type. Instance must be one of 'legacy-kafka-connect' or 'kafka-native'");
+        throw new UnsupportedOperationException("Invalid Kafka connect instance type:");
     }
 }

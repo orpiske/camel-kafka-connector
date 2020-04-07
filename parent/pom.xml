@@ -128,6 +128,22 @@
             </dependency>
             <dependency>
                 <groupId>org.apache.kafka</groupId>
+                <artifactId>connect-runtime</artifactId>
+                <version>${kafka.version}</version>
+                <classifier>test</classifier>
+                <type>test-jar</type>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.kafka</groupId>
+                <artifactId>kafka_2.12</artifactId>
+                <version>${kafka.version}</version>
+                <classifier>test</classifier>
+                <type>test-jar</type>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.kafka</groupId>
                 <artifactId>connect-transforms</artifactId>
                 <version>${kafka.version}</version>
                 <scope>provided</scope>
@@ -137,6 +153,20 @@
                 <artifactId>kafka_2.12</artifactId>
                 <version>${kafka.version}</version>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.kafka</groupId>
+                <artifactId>kafka-clients</artifactId>
+                <version>${kafka.version}</version>
+<!--                <scope>test</scope>-->
+            </dependency>
+            <dependency>
+                <groupId>org.apache.kafka</groupId>
+                <artifactId>kafka-clients</artifactId>
+                <version>${kafka.version}</version>
+                <scope>test</scope>
+                <classifier>test</classifier>
+                <type>test-jar</type>
             </dependency>
 
             <!--  Test dependencies -->
