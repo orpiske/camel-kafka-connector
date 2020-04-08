@@ -19,24 +19,27 @@ package org.apache.camel.kafkaconnector.services.kafkaconnect;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 import org.apache.camel.kafkaconnector.ConnectorPropertyFactory;
-import org.apache.kafka.connect.runtime.standalone.StandaloneConfig;
+import org.apache.camel.kafkaconnector.services.kafka.EmbeddedKafkaService;
+import org.apache.camel.kafkaconnector.services.kafka.KafkaService;
+import org.apache.kafka.connect.runtime.ConnectorConfig;
 import org.apache.kafka.connect.util.clusters.EmbeddedConnectCluster;
 
 import static org.junit.Assert.fail;
 
 public class KafkaConnectEmbedded implements KafkaConnectService {
-    private EmbeddedConnectCluster cluster;
+    private final EmbeddedConnectCluster cluster;
 
-    public KafkaConnectEmbedded() {
+    public KafkaConnectEmbedded(KafkaService kafkaService) {
+        if (!(kafkaService instanceof EmbeddedKafkaService)) {
+            throw new RuntimeException("Invalid Kafka service type: " +
+                    (kafkaService == null ? "null" : kafkaService.getClass()));
+        }
 
+        this.cluster = ((EmbeddedKafkaService) kafkaService).getCluster();
     }
 
     private void convertProperty(Map<String, String> map, Object key, Object value) {
@@ -44,20 +47,20 @@ public class KafkaConnectEmbedded implements KafkaConnectService {
     }
 
     @Override
-    public void initializeConnector(ConnectorPropertyFactory propertyFactory) throws ExecutionException, InterruptedException {
-
+    public void initializeConnector(ConnectorPropertyFactory propertyFactory) {
         Map<String, String> configuredProperties = new HashMap<>();
 
         propertyFactory.getProperties().forEach((k, v) -> convertProperty(configuredProperties, k, v));
 
-        cluster.configureConnector("time", configuredProperties);
+        String name = configuredProperties.get(ConnectorConfig.NAME_CONFIG);
+        cluster.configureConnector(name, configuredProperties);
     }
 
     @Override
-    public void initializeConnectorBlocking(ConnectorPropertyFactory propertyFactory) throws ExecutionException, InterruptedException {
+    public void initializeConnectorBlocking(ConnectorPropertyFactory propertyFactory) throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
 
-        this.cluster.start();
+        initializeConnector(propertyFactory);
         if (!latch.await(30, TimeUnit.SECONDS)) {
             fail("The connector did not start within a reasonable time");
         }
@@ -65,29 +68,11 @@ public class KafkaConnectEmbedded implements KafkaConnectService {
 
     @Override
     public void stop() {
-        this.cluster.stop();
+        // NO-OP
     }
 
     @Override
     public void start() {
-        EmbeddedConnectCluster.Builder builder = new EmbeddedConnectCluster.Builder();
-
-        Properties brokerProps = new Properties();
-        brokerProps.put("auto.create.topics.enable", String.valueOf(false));
-
-
-        Map<String, String> workerProps = new HashMap<>();
-        workerProps.put(StandaloneConfig.OFFSET_COMMIT_INTERVAL_MS_CONFIG, "10000");
-
-        this.cluster = builder
-                .name("connect-cluster")
-                .numBrokers(1)
-                .numWorkers(1)
-                .brokerProps(brokerProps)
-                .workerProps(workerProps)
-                .maskExitProcedures(true)
-                .build();
-
-        cluster.start();
+        // NO-OP
     }
 }
