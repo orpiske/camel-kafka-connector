@@ -32,6 +32,7 @@ import static org.junit.Assert.fail;
 
 public class KafkaConnectEmbedded implements KafkaConnectService {
     private final EmbeddedConnectCluster cluster;
+    private String connectorName;
 
     public KafkaConnectEmbedded(KafkaService kafkaService) {
         if (!(kafkaService instanceof EmbeddedKafkaService)) {
@@ -52,8 +53,8 @@ public class KafkaConnectEmbedded implements KafkaConnectService {
 
         propertyFactory.getProperties().forEach((k, v) -> convertProperty(configuredProperties, k, v));
 
-        String name = configuredProperties.get(ConnectorConfig.NAME_CONFIG);
-        cluster.configureConnector(name, configuredProperties);
+        connectorName = configuredProperties.get(ConnectorConfig.NAME_CONFIG);
+        cluster.configureConnector(connectorName, configuredProperties);
     }
 
     @Override
@@ -68,7 +69,13 @@ public class KafkaConnectEmbedded implements KafkaConnectService {
 
     @Override
     public void stop() {
-        // NO-OP
+        if (connectorName != null) {
+            try {
+                cluster.deleteConnector(connectorName);
+            } finally {
+                connectorName = null;
+            }
+        }
     }
 
     @Override
