@@ -59,12 +59,13 @@ public class KafkaConnectEmbedded implements KafkaConnectService {
 
     @Override
     public void initializeConnectorBlocking(ConnectorPropertyFactory propertyFactory) throws InterruptedException {
-        CountDownLatch latch = new CountDownLatch(1);
+        /*
+        This is (likely) not necessary for this type of embedded runner because it
+        should be running on the same thread as the test code. So we just wrap the
+        other method
+        */
 
         initializeConnector(propertyFactory);
-        if (!latch.await(30, TimeUnit.SECONDS)) {
-            fail("The connector did not start within a reasonable time");
-        }
     }
 
     @Override
