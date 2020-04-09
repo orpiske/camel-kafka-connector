@@ -40,6 +40,10 @@
         <skipIntegrationTests>true</skipIntegrationTests>
     </properties>
     <dependencies>
+        <!--
+        See the comment on the EmbeddedKafkaService class for details about why
+        the scope is set as provided for the connectors
+        -->
         <dependency>
             <groupId>org.apache.camel.kafkaconnector</groupId>
             <artifactId>camel-kafka-connector</artifactId>

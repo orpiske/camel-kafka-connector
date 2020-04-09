@@ -82,6 +82,33 @@ public class EmbeddedKafkaService implements KafkaService {
         Map<String, String> workerProps = new HashMap<>();
         workerProps.put(WorkerConfig.OFFSET_COMMIT_INTERVAL_MS_CONFIG, String.valueOf(OFFSET_COMMIT_INTERVAL_MS));
 
+        /*
+         * We need to construct a list of directories containing *only* the connector classes (ie.: those that
+         * specialize Kafka's Connector abstract class.
+         *
+         * Our build generates jar files with for every connector and puts that in the target directory which the
+         * build dir (ie.: ${project.root}/core/target/camel-kafka-connector-0.0.1-SNAPSHOT.jar,
+         * ${project.root}/connectors/camel-sjms2-kafka-connector/target/camel-sjms2-kafka-connector-0.0.1-SNAPSHOT.jar,
+         * etc).
+         *
+         * The code within the pluginPaths traverses the directories for the core and connectors module, filtering any
+         * file that matches all of the following conditions:
+         * 1) ends with jar
+         * 2) is located in the target directory
+         * 3) contains the strings 'camel' and 'kafka-connector' as part of their name.
+         *
+         * This is also leverage by the fact that the core and connectors modules have the provided scope on the test
+         * pom file.
+         *
+         * Why it does this?
+         *
+         * 1) Because having the connector classes in the classpath could cause library conflicts causing the connectors
+         * and the Kafka connect runtime to fail.
+         * 2) Having the connectors on the classpath causes the following error to appear multiple times in the logs:
+         * 'Plugin class loader for connector: [name] was not found'
+         *
+         * ref: https://docs.confluent.io/current/connect/userguide.html
+         */
         String pluginPaths = pluginPaths();
 
         LOG.info("Adding the following directories to the plugin path: {}", pluginPaths);
