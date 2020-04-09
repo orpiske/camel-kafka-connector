@@ -40,7 +40,7 @@ public class PluginPathHelper {
                 if (fileName.contains("kafka-connector") && fileName.contains("camel")) {
                     String parentDir = file.getParentFile().getCanonicalPath();
                     if (parentDir.endsWith("target")) {
-                        LOG.info("Adding dir with jar file: {} because of file {}", parentDir, fileName);
+                        LOG.debug("Adding dir with jar file: {} because of file {}", parentDir, fileName);
 
                         results.add(parentDir);
                     }
@@ -69,7 +69,7 @@ public class PluginPathHelper {
 
         for (String module : moduleDirs) {
             String path = System.getProperty("project.basedir") + File.separator + module;
-            LOG.info("Base dir used for search: {}", path);
+            LOG.debug("Base dir used for search: {}", path);
             PluginWalker pluginWalker = new PluginWalker();
 
             ret.addAll(pluginWalker.findPlugins(new File(path)));
