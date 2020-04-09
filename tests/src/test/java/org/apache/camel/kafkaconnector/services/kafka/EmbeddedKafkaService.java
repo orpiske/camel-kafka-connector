@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
+//import org.apache.camel.kafkaconnector.CamelSourceConnector;
 import org.apache.kafka.connect.runtime.WorkerConfig;
 import org.apache.kafka.connect.util.clusters.EmbeddedConnectCluster;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -32,10 +33,10 @@ public class EmbeddedKafkaService implements KafkaService {
     private static final Logger LOG = LoggerFactory.getLogger(EmbeddedKafkaService.class);
     private static final long OFFSET_COMMIT_INTERVAL_MS = TimeUnit.SECONDS.toMillis(30);
 
-
     private EmbeddedConnectCluster cluster;
 
     public EmbeddedKafkaService() {
+        LOG.info("Creating the embedded Kafka connect instance");
         EmbeddedConnectCluster.Builder builder = new EmbeddedConnectCluster.Builder();
 
         Properties brokerProps = new Properties();
@@ -43,9 +44,21 @@ public class EmbeddedKafkaService implements KafkaService {
 
         Map<String, String> workerProps = new HashMap<>();
         workerProps.put(WorkerConfig.OFFSET_COMMIT_INTERVAL_MS_CONFIG, String.valueOf(OFFSET_COMMIT_INTERVAL_MS));
-        workerProps.put(WorkerConfig.CONNECTOR_CLIENT_POLICY_CLASS_CONFIG, "All");
-        workerProps.put(WorkerConfig.PLUGIN_PATH_CONFIG, "");
 
+//        ClassLoader loader = CamelSourceConnector.class.getClassLoader();
+//        String classFqn = CamelSourceConnector.class.getName().replace(".", "/") + ".class";
+//
+//        LOG.info("Adding the following directory to the plugin path (FQN): {}", classFqn);
+//        String filePath = loader.getResource(classFqn).getPath();
+//        String pluginPath = filePath.replace(classFqn, "");
+//
+//        LOG.info("Adding the following directory to the plugin path: {}", pluginPath);
+//
+//        workerProps.put(WorkerConfig.PLUGIN_PATH_CONFIG, pluginPath);
+        LOG.info("Adding the following directory to the plugin path ...");
+        workerProps.put(WorkerConfig.PLUGIN_PATH_CONFIG, "/Users/otavio/Projects/java/camel-kafka-connector/core/target/");
+
+        LOG.info("Building the embedded Kafka connect instance");
         this.cluster = builder
                 .name("connect-cluster")
                 .numWorkers(1)
@@ -54,6 +67,9 @@ public class EmbeddedKafkaService implements KafkaService {
                 .workerProps(workerProps)
                 .maskExitProcedures(true)
                 .build();
+
+        LOG.info("Built the embedded Kafka connect instance");
+
     }
 
     @Override

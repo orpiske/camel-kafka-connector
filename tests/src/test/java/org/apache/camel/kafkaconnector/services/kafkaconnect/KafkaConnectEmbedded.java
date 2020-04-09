@@ -17,20 +17,20 @@
 
 package org.apache.camel.kafkaconnector.services.kafkaconnect;
 
+import java.net.URLClassLoader;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.camel.kafkaconnector.ConnectorPropertyFactory;
 import org.apache.camel.kafkaconnector.services.kafka.EmbeddedKafkaService;
 import org.apache.camel.kafkaconnector.services.kafka.KafkaService;
 import org.apache.kafka.connect.runtime.ConnectorConfig;
 import org.apache.kafka.connect.util.clusters.EmbeddedConnectCluster;
-
-import static org.junit.Assert.fail;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class KafkaConnectEmbedded implements KafkaConnectService {
+    private static final Logger LOG = LoggerFactory.getLogger(KafkaConnectEmbedded.class);
     private final EmbeddedConnectCluster cluster;
     private String connectorName;
 
@@ -49,12 +49,14 @@ public class KafkaConnectEmbedded implements KafkaConnectService {
 
     @Override
     public void initializeConnector(ConnectorPropertyFactory propertyFactory) {
+        LOG.info("Adding the new connector");
         Map<String, String> configuredProperties = new HashMap<>();
 
         propertyFactory.getProperties().forEach((k, v) -> convertProperty(configuredProperties, k, v));
 
         connectorName = configuredProperties.get(ConnectorConfig.NAME_CONFIG);
         cluster.configureConnector(connectorName, configuredProperties);
+        LOG.info("Added the new connector");
     }
 
     @Override
