@@ -17,7 +17,6 @@
 
 package org.apache.camel.kafkaconnector.services.kafkaconnect;
 
-import java.net.URLClassLoader;
 import java.util.HashMap;
 import java.util.Map;
 

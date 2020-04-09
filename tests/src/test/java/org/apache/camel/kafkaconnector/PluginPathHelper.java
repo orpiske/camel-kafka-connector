@@ -54,7 +54,7 @@ public class PluginPathHelper {
             try {
                 walk(startDir, results);
             } catch (IOException e) {
-                e.printStackTrace();
+                LOG.error("I/O error while traversing candidate plugin dirs: {}", e.getMessage(), e);
             }
             return results;
         }

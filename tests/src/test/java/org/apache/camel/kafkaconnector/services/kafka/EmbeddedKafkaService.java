@@ -17,16 +17,10 @@
 
 package org.apache.camel.kafkaconnector.services.kafka;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 import org.apache.camel.kafkaconnector.PluginPathHelper;
 import org.apache.kafka.connect.runtime.WorkerConfig;
@@ -34,7 +28,6 @@ import org.apache.kafka.connect.util.clusters.EmbeddedConnectCluster;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testcontainers.shaded.org.apache.commons.io.DirectoryWalker;
 
 public class EmbeddedKafkaService implements KafkaService {
     private static final Logger LOG = LoggerFactory.getLogger(EmbeddedKafkaService.class);
