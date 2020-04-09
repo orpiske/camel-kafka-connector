@@ -41,7 +41,7 @@
     </properties>
     <dependencies>
         <!--
-        See the comment on the EmbeddedKafkaService class for details about why
+        See the comment on the PluginPathHelper class for details about why
         the scope is set as provided for the connectors
         -->
         <dependency>
