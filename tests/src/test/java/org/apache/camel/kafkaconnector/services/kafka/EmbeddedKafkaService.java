@@ -18,7 +18,6 @@
 package org.apache.camel.kafkaconnector.services.kafka;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,15 +28,12 @@ import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-//import org.apache.camel.kafkaconnector.CamelSourceConnector;
 import org.apache.kafka.connect.runtime.WorkerConfig;
 import org.apache.kafka.connect.util.clusters.EmbeddedConnectCluster;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testcontainers.shaded.org.apache.commons.io.DirectoryWalker;
-import org.testcontainers.shaded.org.apache.commons.io.filefilter.FileFilterUtils;
-import org.testcontainers.shaded.org.apache.commons.io.filefilter.IOFileFilter;
 
 public class EmbeddedKafkaService implements KafkaService {
     private static final Logger LOG = LoggerFactory.getLogger(EmbeddedKafkaService.class);
@@ -119,8 +115,7 @@ public class EmbeddedKafkaService implements KafkaService {
     }
 
     private List<String> findPlugins() {
-//        return findPlugins("core", "connectors");
-        return findPlugins("core");
+        return findPlugins("core", "connectors");
     }
 
     private String pluginPaths() {
