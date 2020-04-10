@@ -40,9 +40,9 @@ public class PluginPathHelper {
                 if (fileName.contains("kafka-connector") && fileName.contains("camel")) {
                     String parentDir = file.getParentFile().getCanonicalPath();
                     if (parentDir.endsWith("target")) {
-                        LOG.debug("Adding dir with jar file: {} because of file {}", parentDir, fileName);
+                        LOG.debug("Adding file: {}", file.getCanonicalPath());
 
-                        results.add(parentDir);
+                        results.add(file.getCanonicalPath());
                     }
                 }
             }
@@ -79,7 +79,7 @@ public class PluginPathHelper {
     }
 
     private static List<String> findPlugins() {
-        return findPlugins("core", "connectors");
+        return findPlugins("core", "connectors/camel-sjms2-kafka-connector");
     }
 
     /*
@@ -110,6 +110,9 @@ public class PluginPathHelper {
      * ref: https://docs.confluent.io/current/connect/userguide.html
      */
     public static String pluginPaths() {
-        return findPlugins().stream().collect(Collectors.joining(","));
+        String ret = findPlugins().stream().collect(Collectors.joining(","));
+        LOG.info("Returning the following directories for the plugins: {}", ret);
+
+        return ret;
     }
 }
