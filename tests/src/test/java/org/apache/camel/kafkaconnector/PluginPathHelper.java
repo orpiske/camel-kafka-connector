@@ -31,6 +31,14 @@ import org.testcontainers.shaded.org.apache.commons.io.DirectoryWalker;
 public final class PluginPathHelper {
     private static final Logger LOG = LoggerFactory.getLogger(PluginPathHelper.class);
 
+    private static final String[] MODULES = {
+            "core", "connectors/camel-sjms2-kafka-connector", "connectors/camel-cql-kafka-connector", "" +
+            "connectors/camel-aws-sns-kafka-connector", "connectors/camel-aws-sqs-kafka-connector",
+            "connectors/camel-aws-s3-kafka-connector", "connectors/camel-aws-kinesis-kafka-connector",
+            "connectors/camel-elasticsearch-rest-kafka-connector", "connectors/camel-http-kafka-connector",
+            "connectors/camel-timer-kafka-connector", "connectors/camel-file-kafka-connector"
+    };
+
     private static class PluginWalker extends DirectoryWalker<String> {
         @Override
         protected void handleFile(File file, int depth, Collection<String> results) throws IOException {
@@ -80,8 +88,13 @@ public final class PluginPathHelper {
     }
 
     private static List<String> findPlugins() {
-        return findPlugins("core", "connectors");
+        /*
+         * Only load the subset of modules that has a related test, otherwise the startup time for the
+         * Kafka Connect runtime is extremely long
+         */
+        return findPlugins(MODULES);
     }
+
 
     /*
      * We need to construct a list of directories containing *only* the connector classes (ie.: those that
