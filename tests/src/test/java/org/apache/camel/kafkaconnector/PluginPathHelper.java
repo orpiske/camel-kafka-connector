@@ -40,9 +40,10 @@ public final class PluginPathHelper {
                 if (fileName.contains("kafka-connector") && fileName.contains("camel")) {
                     String parentDir = file.getParentFile().getCanonicalPath();
                     if (parentDir.endsWith("target")) {
-                        LOG.debug("Adding file: {}", file.getCanonicalPath());
+                        String pluginDir = file.getParentFile().getCanonicalPath();
+                        LOG.debug("Adding directory: {}", pluginDir);
 
-                        results.add(file.getCanonicalPath());
+                        results.add(pluginDir);
                     }
                 }
             }
@@ -79,7 +80,7 @@ public final class PluginPathHelper {
     }
 
     private static List<String> findPlugins() {
-        return findPlugins("core");
+        return findPlugins("core", "connectors");
     }
 
     /*
@@ -97,8 +98,8 @@ public final class PluginPathHelper {
      * 2) is located in the target directory
      * 3) contains the strings 'camel' and 'kafka-connector' as part of their name.
      *
-     * This is also leverage by the fact that the core and connectors modules have the provided scope on the test
-     * pom file.
+     * Then for every connector jar file that it finds, it configures the embedded runtime to  includes the parent dir
+     * into the configuration.
      *
      * Why it does this?
      *
