@@ -112,7 +112,7 @@ public final class PluginPathHelper {
      */
     public static String pluginPaths() {
         String ret = findPlugins().stream().collect(Collectors.joining(","));
-        LOG.info("Returning the following directories for the plugins: {}", ret);
+        LOG.info("Returning the following directories for the plugin path: {}", ret);
 
         return ret;
     }
