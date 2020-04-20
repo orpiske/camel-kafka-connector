@@ -40,6 +40,18 @@
         <skipIntegrationTests>true</skipIntegrationTests>
     </properties>
     <dependencies>
+        <!--
+        This one is (temporarily) needed for providing supporting classes for the
+        ConnectRecordValueToMapTransformer - which is needed to properly convert record formats from
+        ElasticSearch to Kafka
+        -->
+        <dependency>
+            <groupId>org.apache.camel.kafkaconnector</groupId>
+            <artifactId>camel-elasticsearch-rest-kafka-connector</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-telegram</artifactId>
