@@ -20,7 +20,7 @@ package org.apache.camel.kafkaconnector.sink.elasticsearch.transforms;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.camel.kafkaconnector.utils.SchemaHelper;
+// import org.apache.camel.kafkaconnector.utils.SchemaHelper;
 import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.common.config.ConfigException;
 import org.apache.kafka.connect.connector.ConnectRecord;
@@ -43,8 +43,9 @@ public class ConnectRecordValueToMapTransformer<R extends ConnectRecord<R>> impl
         Object value = r.value();
 
         targetMap.put(key, value);
-        return r.newRecord(r.topic(), r.kafkaPartition(), null, r.key(),
-                SchemaHelper.buildSchemaBuilderForType(value), targetMap, r.timestamp());
+        // return r.newRecord(r.topic(), r.kafkaPartition(), null, r.key(),
+        //         SchemaHelper.buildSchemaBuilderForType(value), targetMap, r.timestamp());
+        return null;
     }
 
     @Override

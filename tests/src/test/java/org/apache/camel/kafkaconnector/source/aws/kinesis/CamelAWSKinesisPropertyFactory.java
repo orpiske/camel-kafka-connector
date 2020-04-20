@@ -44,10 +44,10 @@ class CamelAWSKinesisPropertyFactory implements ConnectorPropertyFactory {
     @Override
     public Properties getProperties() {
         Properties connectorProps = new Properties();
-        connectorProps.put(ConnectorConfig.NAME_CONFIG, "CamelAWSKinesisSourceConnector");
+        connectorProps.put(ConnectorConfig.NAME_CONFIG, "CamelAwskinesisSourceConnector");
         connectorProps.put("tasks.max", String.valueOf(tasksMax));
 
-        connectorProps.put(ConnectorConfig.CONNECTOR_CLASS_CONFIG, "org.apache.camel.kafkaconnector.CamelSourceConnector");
+        connectorProps.put(ConnectorConfig.CONNECTOR_CLASS_CONFIG, "org.apache.camel.kafkaconnector.awskinesis.CamelAwskinesisSourceConnector");
         connectorProps.put(ConnectorConfig.KEY_CONVERTER_CLASS_CONFIG, "org.apache.kafka.connect.storage.StringConverter");
         connectorProps.put(ConnectorConfig.VALUE_CONVERTER_CLASS_CONFIG, "org.apache.kafka.connect.storage.StringConverter");
 
