@@ -25,7 +25,7 @@ import org.apache.kafka.connect.runtime.ConnectorConfig;
 
 
 /**
- * Creates the set of properties used by a Camel JMS Sink Connector
+ * Creates the set of properties used by a Camel Kinesis Source Connector
  */
 class CamelAWSKinesisPropertyFactory implements ConnectorPropertyFactory {
     private final int tasksMax;
