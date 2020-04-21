@@ -53,6 +53,34 @@
         </dependency>
 
         <dependency>
+            <groupId>org.apache.camel.kafkaconnector</groupId>
+            <artifactId>camel-aws-kinesis-kafka-connector</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.camel.kafkaconnector</groupId>
+            <artifactId>camel-aws-s3-kafka-connector</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.camel.kafkaconnector</groupId>
+            <artifactId>camel-aws-sns-kafka-connector</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.camel.kafkaconnector</groupId>
+            <artifactId>camel-aws-sqs-kafka-connector</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-telegram</artifactId>
         </dependency>
