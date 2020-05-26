@@ -117,7 +117,8 @@ final class CamelSalesforcePropertyFactory extends SourceConnectorPropertyFactor
                 .withTasksMax(1)
                 .withConnectorClass("org.apache.camel.kafkaconnector.salesforce.CamelSalesforceSourceConnector")
                 .withKeyConverterClass("org.apache.kafka.connect.storage.StringConverter")
-                .withValueConverterClass("org.apache.kafka.connect.storage.StringConverter");
+                .withValueConverterClass("org.apache.kafka.connect.storage.StringConverter")
+                .withLoginUrl("https://login.salesforce.com");
 
     }
 

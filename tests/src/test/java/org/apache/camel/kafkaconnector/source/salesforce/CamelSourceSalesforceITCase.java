@@ -201,7 +201,6 @@ public class CamelSourceSalesforceITCase extends AbstractKafkaTest  {
     public void testBasicConsume() throws ExecutionException, InterruptedException {
         ConnectorPropertyFactory factory = CamelSalesforcePropertyFactory.basic()
                 .withKafkaTopic(TestCommon.getDefaultTestTopic(this.getClass()))
-                .withLoginUrl("https://login.salesforce.com")
                 .withUserName(userName)
                 .withPassword(password)
                 .withClientId(clientId)
@@ -225,7 +224,6 @@ public class CamelSourceSalesforceITCase extends AbstractKafkaTest  {
     public void testBasicConsumeUsingUrl() throws ExecutionException, InterruptedException {
         ConnectorPropertyFactory factory = CamelSalesforcePropertyFactory.basic()
                 .withKafkaTopic(TestCommon.getDefaultTestTopic(this.getClass()))
-                .withLoginUrl("https://login.salesforce.com")
                 .withUserName(userName)
                 .withPassword(password)
                 .withClientId(clientId)
@@ -269,7 +267,6 @@ public class CamelSourceSalesforceITCase extends AbstractKafkaTest  {
          */
         ConnectorPropertyFactory factory = CamelSalesforcePropertyFactory.basic()
                 .withKafkaTopic(TestCommon.getDefaultTestTopic(this.getClass()))
-                .withLoginUrl("https://login.salesforce.com")
                 .withUserName(userName)
                 .withPassword(password)
                 .withClientId(clientId)
@@ -288,7 +285,6 @@ public class CamelSourceSalesforceITCase extends AbstractKafkaTest  {
     public void testBasicCDCUsingUrl() throws ExecutionException, InterruptedException {
         ConnectorPropertyFactory factory = CamelSalesforcePropertyFactory.basic()
                 .withKafkaTopic(TestCommon.getDefaultTestTopic(this.getClass()))
-                .withLoginUrl("https://login.salesforce.com")
                 .withUserName(userName)
                 .withPassword(password)
                 .withClientId(clientId)
