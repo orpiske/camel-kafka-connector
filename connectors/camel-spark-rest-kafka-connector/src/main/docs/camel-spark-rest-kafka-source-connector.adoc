@@ -50,4 +50,6 @@ The camel-spark-rest source connector supports 27 options, which are listed belo
 | *camel.component.spark-rest.truststoreFile* | Configures connection to be secure to use the truststore file | null | MEDIUM
 | *camel.component.spark-rest.truststorePassword* | Configures connection to be secure to use the truststore password | null | MEDIUM
 |===
+
+
 // kafka-connector options: END

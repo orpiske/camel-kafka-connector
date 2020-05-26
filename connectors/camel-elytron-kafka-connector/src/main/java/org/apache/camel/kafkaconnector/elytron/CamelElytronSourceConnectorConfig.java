@@ -124,7 +124,7 @@ public class CamelElytronSourceConnectorConfig
         this(conf(), parsedConfig);
     }
 
-    public static ConfigDef conf(Map<String, String> parsedConfig) {
+    public static ConfigDef conf() {
         ConfigDef conf = new ConfigDef(CamelSourceConnectorConfig.conf());
         conf.define(CAMEL_SOURCE_ELYTRON_PATH_HTTP_URICONF, ConfigDef.Type.STRING, CAMEL_SOURCE_ELYTRON_PATH_HTTP_URIDEFAULT, ConfigDef.Importance.HIGH, CAMEL_SOURCE_ELYTRON_PATH_HTTP_URIDOC);
         conf.define(CAMEL_SOURCE_ELYTRON_ENDPOINT_ALLOWED_ROLES_CONF, ConfigDef.Type.STRING, CAMEL_SOURCE_ELYTRON_ENDPOINT_ALLOWED_ROLES_DEFAULT, ConfigDef.Importance.MEDIUM, CAMEL_SOURCE_ELYTRON_ENDPOINT_ALLOWED_ROLES_DOC);

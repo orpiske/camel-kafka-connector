@@ -118,7 +118,7 @@ public class CamelSparkrestSourceConnectorConfig
         this(conf(), parsedConfig);
     }
 
-    public static ConfigDef conf(Map<String, String> parsedConfig) {
+    public static ConfigDef conf() {
         ConfigDef conf = new ConfigDef(CamelSourceConnectorConfig.conf());
         conf.define(CAMEL_SOURCE_SPARKREST_PATH_VERB_CONF, ConfigDef.Type.STRING, CAMEL_SOURCE_SPARKREST_PATH_VERB_DEFAULT, ConfigDef.Importance.HIGH, CAMEL_SOURCE_SPARKREST_PATH_VERB_DOC);
         conf.define(CAMEL_SOURCE_SPARKREST_PATH_PATH_CONF, ConfigDef.Type.STRING, CAMEL_SOURCE_SPARKREST_PATH_PATH_DEFAULT, ConfigDef.Importance.HIGH, CAMEL_SOURCE_SPARKREST_PATH_PATH_DOC);
