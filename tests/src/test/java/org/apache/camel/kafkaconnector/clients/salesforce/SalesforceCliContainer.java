@@ -26,7 +26,7 @@ import org.testcontainers.containers.wait.strategy.Wait;
 
 public class SalesforceCliContainer extends GenericContainer<SalesforceCliContainer> {
     private static final Logger LOG = LoggerFactory.getLogger(SalesforceCliContainer.class);
-    private static final String hostPath = System.getProperty("it.test.salesforce.sfx.path");
+    private static final String hostPath = System.getProperty("it.test.salesforce.sfdx.path");
 
 
     public SalesforceCliContainer() {

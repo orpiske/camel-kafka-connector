@@ -55,9 +55,9 @@ You need to set 3 system properties to run this test:
 -Dit.test.salesforce.client.secret=<client secret>
 -Dit.test.salesforce.password=<user password>
 -Dit.test.salesforce.username=<user name>
--Dit.test.salesforce.sfx.path=/path/to/sfdx
+-Dit.test.salesforce.sfdx.path=/path/to/sfdx
 
-The it.test.salesforce.sfx.path property should point to the directory containing the sfdx
+The it.test.salesforce.sfdx.path property should point to the directory containing the sfdx
 CLI client configuration. This can be generated using the following steps:
 
 1. Run the Salesforce CLI container:
