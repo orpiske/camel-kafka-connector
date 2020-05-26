@@ -19,13 +19,10 @@ package org.apache.camel.kafkaconnector.clients.salesforce;
 
 import java.io.IOException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 
 public class SalesforceCliContainer extends GenericContainer<SalesforceCliContainer> {
-    private static final Logger LOG = LoggerFactory.getLogger(SalesforceCliContainer.class);
     private static final String hostPath = System.getProperty("it.test.salesforce.sfdx.path");
 
 
