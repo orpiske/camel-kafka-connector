@@ -67,7 +67,7 @@ public class CamelEventadminSourceConnectorConfig
         this(conf(), parsedConfig);
     }
 
-    public static ConfigDef conf(Map<String, String> parsedConfig) {
+    public static ConfigDef conf() {
         ConfigDef conf = new ConfigDef(CamelSourceConnectorConfig.conf());
         conf.define(CAMEL_SOURCE_EVENTADMIN_PATH_TOPIC_CONF, ConfigDef.Type.STRING, CAMEL_SOURCE_EVENTADMIN_PATH_TOPIC_DEFAULT, ConfigDef.Importance.MEDIUM, CAMEL_SOURCE_EVENTADMIN_PATH_TOPIC_DOC);
         conf.define(CAMEL_SOURCE_EVENTADMIN_ENDPOINT_SEND_CONF, ConfigDef.Type.BOOLEAN, CAMEL_SOURCE_EVENTADMIN_ENDPOINT_SEND_DEFAULT, ConfigDef.Importance.MEDIUM, CAMEL_SOURCE_EVENTADMIN_ENDPOINT_SEND_DOC);

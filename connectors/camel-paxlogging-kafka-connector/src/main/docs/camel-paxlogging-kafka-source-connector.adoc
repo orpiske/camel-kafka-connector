@@ -32,4 +32,6 @@ The camel-paxlogging source connector supports 9 options, which are listed below
 | *camel.component.paxlogging.bundleContext* | The OSGi BundleContext is automatic injected by Camel | null | MEDIUM
 | *camel.component.paxlogging.basicPropertyBinding* | Whether the component should use basic property binding (Camel 2.x) or the newer property binding with additional capabilities | false | MEDIUM
 |===
+
+
 // kafka-connector options: END

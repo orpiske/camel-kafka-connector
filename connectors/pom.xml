@@ -56,6 +56,18 @@
                 <enabled>true</enabled>
             </releases>
         </repository>
+        <!-- camel-ipfs and camel-weka -->
+        <repository>
+            <id>jboss.thirdparty</id>
+            <name>JBoss Thirdparty Repository</name>
+            <url>https://repository.jboss.org/nexus/service/local/repositories/thirdparty-releases/content/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
     </repositories>
 
     <build>
@@ -76,8 +88,8 @@
                     <!--  <failFast>false</failFast> -->
                     <!-- set to true to make build fail if an option has no description -->
                     <!--  <failOnMissingDescription>false</failOnMissingDescription> -->
-                    <!-- Process just this components -->
-                    <!-- <filter></filter> -->
+                    <!-- Process just this, comma separated, components -->
+                    <!--  <filter></filter>-->
                     <!-- Regenerate connector pom file completely even if one already exists -->
                     <!-- WARNING: you may lose some changes done to the pom. -->
                     <!-- <overridePomFile>false</overridePomFile> -->
@@ -86,6 +98,8 @@
                     <licenseTemplate>${project.basedir}/camel-kafka-connector-LICENSE.txt</licenseTemplate>
                     <fixDependenciesProperties>${project.basedir}/camel-kafka-connector-fix-dependencies.properties</fixDependenciesProperties>
                     <packageFileTemplate>${project.basedir}/template-connector-package.xml</packageFileTemplate>
+                    <exampleSourcePropertiesFileTemplate>${project.basedir}/camel-kafka-connector-template-example-source-properties.template</exampleSourcePropertiesFileTemplate>
+                    <exampleSinkPropertiesFileTemplate>${project.basedir}/camel-kafka-connector-template-example-sink-properties.template</exampleSinkPropertiesFileTemplate>
                 </configuration>
                 <executions>
                     <execution>
@@ -103,6 +117,19 @@
                         <version>${camel.version}</version>
                     </dependency>
                 </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.camel.kafkaconnector</groupId>
+                <artifactId>camel-kafka-connector-docs-maven-plugin</artifactId>
+                <version>${project.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>update-doc-connectors-list</goal>
+                        </goals>
+                        <phase>process-resources</phase>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
@@ -434,6 +461,7 @@
         <module>camel-stream-kafka-connector</module>
         <module>camel-string-template-kafka-connector</module>
         <module>camel-stub-kafka-connector</module>
+        <module>camel-syslog-kafka-connector</module>
         <module>camel-telegram-kafka-connector</module>
         <module>camel-thrift-kafka-connector</module>
         <module>camel-tika-kafka-connector</module>

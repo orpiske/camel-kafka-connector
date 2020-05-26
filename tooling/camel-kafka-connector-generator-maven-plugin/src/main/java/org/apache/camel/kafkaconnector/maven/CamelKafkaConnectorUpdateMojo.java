@@ -94,30 +94,30 @@ public class CamelKafkaConnectorUpdateMojo extends AbstractCamelKafkaConnectorMo
     private static final String ADDITIONAL_COMMON_PROPERTIES_PROPERTY_PREFIX = "additional_properties_";
     private static final String XML_FEATURES_DISALLOW_DOCTYPE_DECL = "http://apache.org/xml/features/disallow-doctype-decl";
 
-    private static final Map<String, Class<?>> PRIMITIVEMAP;
-    private static final Map<String, String> CONFIGDEFMAP;
+    private static final Map<String, Class<?>> PRIMITIVE_TYPES_TO_CLASS_MAP;
+    private static final Map<String, String> PRIMITIVE_TYPES_TO_KAFKA_CONFIG_DEF_MAP;
 
-    private static final Map<String, String> RESERVEDWORDSUBSTITUTIONMAP;
+    private static final Map<String, String> RESERVED_WORDS_SUBSTITUTION_MAP;
 
     static {
-        PRIMITIVEMAP = new HashMap<>();
-        PRIMITIVEMAP.put("boolean", Boolean.class);
-        PRIMITIVEMAP.put("long", Long.class);
-        PRIMITIVEMAP.put("int", Integer.class);
-        PRIMITIVEMAP.put("short", Short.class);
-        PRIMITIVEMAP.put("double", Double.class);
-        PRIMITIVEMAP.put("float", Float.class);
+        PRIMITIVE_TYPES_TO_CLASS_MAP = new HashMap<>();
+        PRIMITIVE_TYPES_TO_CLASS_MAP.put("boolean", Boolean.class);
+        PRIMITIVE_TYPES_TO_CLASS_MAP.put("long", Long.class);
+        PRIMITIVE_TYPES_TO_CLASS_MAP.put("int", Integer.class);
+        PRIMITIVE_TYPES_TO_CLASS_MAP.put("short", Short.class);
+        PRIMITIVE_TYPES_TO_CLASS_MAP.put("double", Double.class);
+        PRIMITIVE_TYPES_TO_CLASS_MAP.put("float", Float.class);
 
-        CONFIGDEFMAP = new HashMap<>();
-        CONFIGDEFMAP.put("boolean", "ConfigDef.Type.BOOLEAN");
-        CONFIGDEFMAP.put("long", "ConfigDef.Type.LONG");
-        CONFIGDEFMAP.put("int", "ConfigDef.Type.INT");
-        CONFIGDEFMAP.put("short", "ConfigDef.Type.SHORT");
-        CONFIGDEFMAP.put("double", "ConfigDef.Type.DOUBLE");
-        CONFIGDEFMAP.put("float", "ConfigDef.Type.DOUBLE");
+        PRIMITIVE_TYPES_TO_KAFKA_CONFIG_DEF_MAP = new HashMap<>();
+        PRIMITIVE_TYPES_TO_KAFKA_CONFIG_DEF_MAP.put("boolean", "ConfigDef.Type.BOOLEAN");
+        PRIMITIVE_TYPES_TO_KAFKA_CONFIG_DEF_MAP.put("long", "ConfigDef.Type.LONG");
+        PRIMITIVE_TYPES_TO_KAFKA_CONFIG_DEF_MAP.put("int", "ConfigDef.Type.INT");
+        PRIMITIVE_TYPES_TO_KAFKA_CONFIG_DEF_MAP.put("short", "ConfigDef.Type.SHORT");
+        PRIMITIVE_TYPES_TO_KAFKA_CONFIG_DEF_MAP.put("double", "ConfigDef.Type.DOUBLE");
+        PRIMITIVE_TYPES_TO_KAFKA_CONFIG_DEF_MAP.put("float", "ConfigDef.Type.DOUBLE");
 
-        RESERVEDWORDSUBSTITUTIONMAP = new HashMap<>();
-        RESERVEDWORDSUBSTITUTIONMAP.put("class", "clazz");
+        RESERVED_WORDS_SUBSTITUTION_MAP = new HashMap<>();
+        RESERVED_WORDS_SUBSTITUTION_MAP.put("class", "clazz");
     }
 
     protected DynamicClassLoader projectClassLoader;
@@ -359,7 +359,7 @@ public class CamelKafkaConnectorUpdateMojo extends AbstractCamelKafkaConnectorMo
         throws MojoFailureException, ResourceNotFoundException, FileResourceCreationException, IOException, MojoExecutionException {
         String ctCapitalizedName = StringUtils.capitalize(ct.name().toLowerCase());
         String ctLowercaseName = ct.name().toLowerCase();
-        String packageName = "org.apache.camel.kafkaconnector." + RESERVEDWORDSUBSTITUTIONMAP.getOrDefault(sanitizedName.replace("-", ""), sanitizedName.replace("-", ""));
+        String packageName = "org.apache.camel.kafkaconnector." + RESERVED_WORDS_SUBSTITUTION_MAP.getOrDefault(sanitizedName.replace("-", ""), sanitizedName.replace("-", ""));
         Map<String, String> additionalProperties = new HashMap<>();
         Properties properties = new Properties();
         properties.load(new FileInputStream(rm.getResourceAsFile(fixDependenciesProperties)));
@@ -387,8 +387,8 @@ public class CamelKafkaConnectorUpdateMojo extends AbstractCamelKafkaConnectorMo
         javaClassConnectorConfig.addMethod().setConstructor(true).setName(javaClassConnectorConfigName).addParameter("Map<String, String>", "parsedConfig").setPublic()
             .setBody("this(conf(), parsedConfig);");
 
-        Method confMethod = javaClassConnectorConfig.addMethod().setConstructor(false).setName("conf").addParameter("Map<String, String>", "parsedConfig")
-            .setReturnType("ConfigDef").setPublic().setStatic().setBody("ConfigDef conf = new ConfigDef(Camel" + ctCapitalizedName + "ConnectorConfig.conf());\n");
+        Method confMethod = javaClassConnectorConfig.addMethod().setConstructor(false).setName("conf").setReturnType("ConfigDef").setPublic().setStatic()
+            .setBody("ConfigDef conf = new ConfigDef(Camel" + ctCapitalizedName + "ConnectorConfig.conf());\n");
 
         Predicate<? super BaseOptionModel> filterEndpointOptions;
         switch (ct) {
@@ -475,6 +475,38 @@ public class CamelKafkaConnectorUpdateMojo extends AbstractCamelKafkaConnectorMo
         String javaClassConnectorFileName = packageName.replaceAll("\\.", "\\/") + "/" + javaClassConnectorName + ".java";
         MavenUtils.writeSourceIfChanged(javaClassConnector, javaClassConnectorFileName, false, connectorDir, rm.getResourceAsFile(javaFilesHeader));
 
+        // docs/examples/Camel{sanitizedName}{Sink,Source}.properties
+        try {
+            String examplesPropertiestemplate = null;
+            switch (ct) {
+                case SOURCE:
+                    examplesPropertiestemplate = loadText(rm.getResourceAsFile(exampleSourcePropertiesFileTemplate));
+                    break;
+                case SINK:
+                    examplesPropertiestemplate = loadText(rm.getResourceAsFile(exampleSinkPropertiesFileTemplate));
+                    break;
+                default:
+                    break;
+            }
+            HashMap<String, Object> templateParams = new HashMap();
+            templateParams.put("connectorName", StringUtils.capitalize(sanitizedName));
+            templateParams.put("connectorClass", packageName + "." + javaClassConnectorName);
+            ArrayList<CamelKafkaConnectorOptionModel> mandatoryOptions = new ArrayList();
+            listOptions.stream().filter(o -> o.getPriority().toUpperCase().equals("HIGH")).forEach(o -> mandatoryOptions.add(o));
+            mandatoryOptions.sort((option1, option2) -> {
+                String name1 = option1.getName();
+                String name2 = option2.getName();
+                int res = String.CASE_INSENSITIVE_ORDER.compare(name1, name2);
+                return (res != 0) ? res : name1.compareTo(name2);
+            });
+            templateParams.put("options", mandatoryOptions);
+            String examplePropertiesFileContent = (String)TemplateRuntime.eval(examplesPropertiestemplate, templateParams);
+            writeFileIfChanged(examplePropertiesFileContent, new File(connectorDir, "src/main/docs/examples/" + javaClassConnectorName + ".properties"), getLog());
+        } catch (Exception e) {
+            throw new MojoExecutionException("Error processing mvel examples properties template. Reason: " + e, e);
+        }
+
+        // Generate documentation in src/main/docs and docs/modules/ROOT/pages/connectors
         File docFolder = new File(connectorDir, "src/main/docs/");
         File docFile = new File(docFolder, getMainDepArtifactId() + "-kafka-" + ct.name().toLowerCase() + "-connector.adoc");
         File docFolderWebsite = new File(projectBaseDir, "docs/modules/ROOT/pages/connectors/");
@@ -529,7 +561,7 @@ public class CamelKafkaConnectorUpdateMojo extends AbstractCamelKafkaConnectorMo
         javaClass.addField().setFinal(true).setPublic().setStatic(true).setName(docFieldName).setType(String.class).setStringInitializer(docLiteralInitializer);
 
         String defaultFieldName = propertyPrefix + "DEFAULT";
-        Class<?> defaultValueClass = PRIMITIVEMAP.getOrDefault(epo.getShortJavaType(), String.class);
+        Class<?> defaultValueClass = PRIMITIVE_TYPES_TO_CLASS_MAP.getOrDefault(epo.getShortJavaType(), String.class);
         String defaultValueClassLiteralInitializer = epo.getDefaultValue() == null ? "null" : epo.getDefaultValue().toString();
         if (!defaultValueClassLiteralInitializer.equals("null") && defaultValueClass.equals(String.class)) {
             defaultValueClassLiteralInitializer = "\"" + defaultValueClassLiteralInitializer + "\"";
@@ -543,7 +575,7 @@ public class CamelKafkaConnectorUpdateMojo extends AbstractCamelKafkaConnectorMo
         javaClass.addField().setFinal(true).setPublic().setStatic(true).setName(defaultFieldName).setType(defaultValueClass)
             .setLiteralInitializer(defaultValueClassLiteralInitializer);
 
-        String confType = CONFIGDEFMAP.getOrDefault(epo.getShortJavaType(), "ConfigDef.Type.STRING");
+        String confType = PRIMITIVE_TYPES_TO_KAFKA_CONFIG_DEF_MAP.getOrDefault(epo.getShortJavaType(), "ConfigDef.Type.STRING");
         String confPriority = epo.isDeprecated() ? "ConfigDef.Importance.LOW" : "ConfigDef.Importance.MEDIUM";
         confPriority = epo.isRequired() ? "ConfigDef.Importance.HIGH" : confPriority;
         confMethod.setBody(confMethod.getBody() + "conf.define(" + confFieldName + ", " + confType + ", " + defaultFieldName + ", " + confPriority + ", " + docFieldName + ");\n");

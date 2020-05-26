@@ -32,12 +32,12 @@ public final class PluginPathHelper {
     private static final Logger LOG = LoggerFactory.getLogger(PluginPathHelper.class);
 
     private static final String[] MODULES = {
-        "core", "connectors/camel-sjms2-kafka-connector", "connectors/camel-cql-kafka-connector",
+        "connectors/camel-sjms2-kafka-connector", "connectors/camel-cql-kafka-connector",
         "connectors/camel-aws-sns-kafka-connector", "connectors/camel-aws-sqs-kafka-connector",
         "connectors/camel-aws-s3-kafka-connector", "connectors/camel-aws-kinesis-kafka-connector",
         "connectors/camel-elasticsearch-rest-kafka-connector", "connectors/camel-http-kafka-connector",
         "connectors/camel-timer-kafka-connector", "connectors/camel-file-kafka-connector",
-        "connectors/camel-slack-kafka-connector"
+        "connectors/camel-slack-kafka-connector", "connectors/camel-syslog-kafka-connector"
     };
 
     private static class PluginWalker extends DirectoryWalker<String> {
