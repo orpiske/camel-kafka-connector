@@ -50,10 +50,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 @Testcontainers
 public class CamelSinkAWSSQSITCase extends AbstractKafkaTest {
-    @RegisterExtension
-    public static AWSService<AWSSQSClient> awsService = AWSServiceFactory.createSQSService();
-
     private static final Logger LOG = LoggerFactory.getLogger(CamelSinkAWSSQSITCase.class);
+
+    @RegisterExtension
+    public final AWSService<AWSSQSClient> awsService = AWSServiceFactory.createSQSService();
 
     private AWSSQSClient awssqsClient;
 

@@ -47,10 +47,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 @Testcontainers
 public class CamelSourceAWSS3ITCase extends AbstractKafkaTest {
-    @RegisterExtension
-    public static AWSService<AmazonS3> service = AWSServiceFactory.createS3Service();
-
     private static final Logger LOG = LoggerFactory.getLogger(CamelSourceAWSS3ITCase.class);
+
+    @RegisterExtension
+    public final AWSService<AmazonS3> service = AWSServiceFactory.createS3Service();
 
     private AmazonS3 awsS3Client;
 

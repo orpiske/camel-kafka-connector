@@ -37,6 +37,7 @@ import org.apache.camel.kafkaconnector.common.ConnectorPropertyFactory;
 import org.apache.camel.kafkaconnector.common.clients.kafka.KafkaClient;
 import org.apache.camel.kafkaconnector.common.utils.TestUtils;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -49,10 +50,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 @Testcontainers
 public class CamelSinkAWSSNSITCase extends AbstractKafkaTest  {
-    @RegisterExtension
-    public static AWSService<AWSSQSClient> service = AWSServiceFactory.createSNSService();
-
     private static final Logger LOG = LoggerFactory.getLogger(CamelSinkAWSSNSITCase.class);
+
+    @RegisterExtension
+    public final AWSService<AWSSQSClient> service = AWSServiceFactory.createSNSService();
 
     private AWSSQSClient awsSqsClient;
 
@@ -175,6 +176,7 @@ public class CamelSinkAWSSNSITCase extends AbstractKafkaTest  {
         }
     }
 
+    @Disabled("Disabled due to issue #260")
     @Test
     @Timeout(value = 90)
     public void testBasicSendReceiveUsingUrl() {
@@ -192,7 +194,7 @@ public class CamelSinkAWSSNSITCase extends AbstractKafkaTest  {
                         .append("subscribeSNStoSQS", "true")
                         .append("accessKey", amazonProperties.getProperty(AWSConfigs.ACCESS_KEY))
                         .append("secretKey", amazonProperties.getProperty(AWSConfigs.SECRET_KEY))
-                        .append("protocol", amazonProperties.getProperty(AWSConfigs.PROTOCOL))
+//                        .append("protocol", amazonProperties.getProperty(AWSConfigs.PROTOCOL))
                         .append("region", amazonProperties.getProperty(AWSConfigs.REGION, Regions.US_EAST_1.name()))
                         .append("configuration", "#class:" + TestSNSConfiguration.class.getName())
                         .buildUrl();

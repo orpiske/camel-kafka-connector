@@ -52,11 +52,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Testcontainers
 public class CamelSourceAWSKinesisITCase extends AbstractKafkaTest {
-    @RegisterExtension
-    public static AWSService<AmazonKinesis> service = AWSServiceFactory.createKinesisService();
-    
     private static final Logger LOG = LoggerFactory.getLogger(CamelSourceAWSKinesisITCase.class);
 
+    @RegisterExtension
+    public final AWSService<AmazonKinesis> service = AWSServiceFactory.createKinesisService();
+    
     private AmazonKinesis awsKinesisClient;
 
     private volatile int received;
