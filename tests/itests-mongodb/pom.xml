@@ -28,6 +28,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>itests-mongodb</artifactId>
+    <name>Camel-Kafka-Connector :: Tests :: MongoDb</name>
 
     <dependencies>
         <dependency>
