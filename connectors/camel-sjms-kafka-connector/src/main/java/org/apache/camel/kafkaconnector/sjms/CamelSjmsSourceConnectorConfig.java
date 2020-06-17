@@ -115,7 +115,7 @@ public class CamelSjmsSourceConnectorConfig
     public static final Integer CAMEL_SOURCE_SJMS_ENDPOINT_TRANSACTION_BATCH_COUNT_DEFAULT = -1;
     public static final String CAMEL_SOURCE_SJMS_ENDPOINT_TRANSACTION_BATCH_TIMEOUT_CONF = "camel.source.endpoint.transactionBatchTimeout";
     public static final String CAMEL_SOURCE_SJMS_ENDPOINT_TRANSACTION_BATCH_TIMEOUT_DOC = "Sets timeout (in millis) for batch transactions, the value should be 1000 or higher.";
-    public static final Long CAMEL_SOURCE_SJMS_ENDPOINT_TRANSACTION_BATCH_TIMEOUT_DEFAULT = 5000L;
+    public static final Long CAMEL_SOURCE_SJMS_ENDPOINT_TRANSACTION_BATCH_TIMEOUT_DEFAULT = 5L;
     public static final String CAMEL_SOURCE_SJMS_ENDPOINT_TRANSACTION_COMMIT_STRATEGY_CONF = "camel.source.endpoint.transactionCommitStrategy";
     public static final String CAMEL_SOURCE_SJMS_ENDPOINT_TRANSACTION_COMMIT_STRATEGY_DOC = "Sets the commit strategy.";
     public static final String CAMEL_SOURCE_SJMS_ENDPOINT_TRANSACTION_COMMIT_STRATEGY_DEFAULT = null;

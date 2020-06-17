@@ -140,7 +140,7 @@ public class CamelSftpSinkConnectorConfig extends CamelSinkConnectorConfig {
     public static final Integer CAMEL_SINK_SFTP_ENDPOINT_SERVER_ALIVE_INTERVAL_DEFAULT = null;
     public static final String CAMEL_SINK_SFTP_ENDPOINT_SO_TIMEOUT_CONF = "camel.sink.endpoint.soTimeout";
     public static final String CAMEL_SINK_SFTP_ENDPOINT_SO_TIMEOUT_DOC = "Sets the so timeout FTP and FTPS Only for Camel 2.4. SFTP for Camel 2.14.3/2.15.3/2.16 onwards. Is the SocketOptions.SO_TIMEOUT value in millis. Recommended option is to set this to 300000 so as not have a hanged connection. On SFTP this option is set as timeout on the JSCH Session instance.";
-    public static final Integer CAMEL_SINK_SFTP_ENDPOINT_SO_TIMEOUT_DEFAULT = 300000;
+    public static final Integer CAMEL_SINK_SFTP_ENDPOINT_SO_TIMEOUT_DEFAULT = 5;
     public static final String CAMEL_SINK_SFTP_ENDPOINT_STEPWISE_CONF = "camel.sink.endpoint.stepwise";
     public static final String CAMEL_SINK_SFTP_ENDPOINT_STEPWISE_DOC = "Sets whether we should stepwise change directories while traversing file structures when downloading files, or as well when uploading a file to a directory. You can disable this if you for example are in a situation where you cannot change directory on the FTP server due security reasons. Stepwise cannot be used together with streamDownload.";
     public static final Boolean CAMEL_SINK_SFTP_ENDPOINT_STEPWISE_DEFAULT = true;
@@ -152,7 +152,7 @@ public class CamelSftpSinkConnectorConfig extends CamelSinkConnectorConfig {
     public static final Boolean CAMEL_SINK_SFTP_ENDPOINT_THROW_EXCEPTION_ON_CONNECT_FAILED_DEFAULT = false;
     public static final String CAMEL_SINK_SFTP_ENDPOINT_TIMEOUT_CONF = "camel.sink.endpoint.timeout";
     public static final String CAMEL_SINK_SFTP_ENDPOINT_TIMEOUT_DOC = "Sets the data timeout for waiting for reply Used only by FTPClient";
-    public static final Integer CAMEL_SINK_SFTP_ENDPOINT_TIMEOUT_DEFAULT = 30000;
+    public static final Integer CAMEL_SINK_SFTP_ENDPOINT_TIMEOUT_DEFAULT = 30;
     public static final String CAMEL_SINK_SFTP_ENDPOINT_CIPHERS_CONF = "camel.sink.endpoint.ciphers";
     public static final String CAMEL_SINK_SFTP_ENDPOINT_CIPHERS_DOC = "Set a comma separated list of ciphers that will be used in order of preference. Possible cipher names are defined by JCraft JSCH. Some examples include: aes128-ctr,aes128-cbc,3des-ctr,3des-cbc,blowfish-cbc,aes192-cbc,aes256-cbc. If not specified the default list from JSCH will be used.";
     public static final String CAMEL_SINK_SFTP_ENDPOINT_CIPHERS_DEFAULT = null;

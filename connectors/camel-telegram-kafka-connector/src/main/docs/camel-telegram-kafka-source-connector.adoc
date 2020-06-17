@@ -15,7 +15,7 @@ When using camel-telegram-kafka-connector as source make sure to use the followi
 ----
 
 
-The camel-telegram source connector supports 36 options, which are listed below.
+The camel-telegram source connector supports 37 options, which are listed below.
 
 
 
@@ -37,6 +37,7 @@ The camel-telegram source connector supports 36 options, which are listed below.
 | *camel.source.endpoint.synchronous* | Sets whether synchronous processing should be strictly used, or Camel is allowed to use asynchronous processing (if supported). | false | MEDIUM
 | *camel.source.endpoint.proxyHost* | HTTP proxy host which could be used when sending out the message. | null | MEDIUM
 | *camel.source.endpoint.proxyPort* | HTTP proxy port which could be used when sending out the message. | null | MEDIUM
+| *camel.source.endpoint.proxyType* | HTTP proxy type which could be used when sending out the message. One of: [HTTP] [SOCKS4] [SOCKS5] | "HTTP" | MEDIUM
 | *camel.source.endpoint.backoffErrorThreshold* | The number of subsequent error polls (failed due some error) that should happen before the backoffMultipler should kick-in. | null | MEDIUM
 | *camel.source.endpoint.backoffIdleThreshold* | The number of subsequent idle polls that should happen before the backoffMultipler should kick-in. | null | MEDIUM
 | *camel.source.endpoint.backoffMultiplier* | To let the scheduled polling consumer backoff if there has been a number of subsequent idles/errors in a row. The multiplier is then the number of polls that will be skipped before the next actual attempt is happening again. When this option is in use then backoffIdleThreshold and/or backoffErrorThreshold must also be configured. | null | MEDIUM

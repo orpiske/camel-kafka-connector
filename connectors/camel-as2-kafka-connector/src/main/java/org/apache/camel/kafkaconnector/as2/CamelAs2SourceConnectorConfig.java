@@ -174,15 +174,15 @@ public class CamelAs2SourceConnectorConfig extends CamelSourceConnectorConfig {
     public static final String CAMEL_SOURCE_AS2_ENDPOINT_USE_FIXED_DELAY_CONF = "camel.source.endpoint.useFixedDelay";
     public static final String CAMEL_SOURCE_AS2_ENDPOINT_USE_FIXED_DELAY_DOC = "Controls if fixed delay or fixed rate is used. See ScheduledExecutorService in JDK for details.";
     public static final Boolean CAMEL_SOURCE_AS2_ENDPOINT_USE_FIXED_DELAY_DEFAULT = true;
-    public static final String CAMEL_SOURCE_AS2_COMPONENT_CONFIGURATION_CONF = "camel.component.as2.configuration";
-    public static final String CAMEL_SOURCE_AS2_COMPONENT_CONFIGURATION_DOC = "To use the shared configuration";
-    public static final String CAMEL_SOURCE_AS2_COMPONENT_CONFIGURATION_DEFAULT = null;
     public static final String CAMEL_SOURCE_AS2_COMPONENT_BRIDGE_ERROR_HANDLER_CONF = "camel.component.as2.bridgeErrorHandler";
     public static final String CAMEL_SOURCE_AS2_COMPONENT_BRIDGE_ERROR_HANDLER_DOC = "Allows for bridging the consumer to the Camel routing Error Handler, which mean any exceptions occurred while the consumer is trying to pickup incoming messages, or the likes, will now be processed as a message and handled by the routing Error Handler. By default the consumer will use the org.apache.camel.spi.ExceptionHandler to deal with exceptions, that will be logged at WARN or ERROR level and ignored.";
     public static final Boolean CAMEL_SOURCE_AS2_COMPONENT_BRIDGE_ERROR_HANDLER_DEFAULT = false;
     public static final String CAMEL_SOURCE_AS2_COMPONENT_BASIC_PROPERTY_BINDING_CONF = "camel.component.as2.basicPropertyBinding";
     public static final String CAMEL_SOURCE_AS2_COMPONENT_BASIC_PROPERTY_BINDING_DOC = "Whether the component should use basic property binding (Camel 2.x) or the newer property binding with additional capabilities";
     public static final Boolean CAMEL_SOURCE_AS2_COMPONENT_BASIC_PROPERTY_BINDING_DEFAULT = false;
+    public static final String CAMEL_SOURCE_AS2_COMPONENT_CONFIGURATION_CONF = "camel.component.as2.configuration";
+    public static final String CAMEL_SOURCE_AS2_COMPONENT_CONFIGURATION_DOC = "Component configuration";
+    public static final String CAMEL_SOURCE_AS2_COMPONENT_CONFIGURATION_DEFAULT = null;
 
     public CamelAs2SourceConnectorConfig(
             ConfigDef config,
@@ -246,9 +246,9 @@ public class CamelAs2SourceConnectorConfig extends CamelSourceConnectorConfig {
         conf.define(CAMEL_SOURCE_AS2_ENDPOINT_START_SCHEDULER_CONF, ConfigDef.Type.BOOLEAN, CAMEL_SOURCE_AS2_ENDPOINT_START_SCHEDULER_DEFAULT, ConfigDef.Importance.MEDIUM, CAMEL_SOURCE_AS2_ENDPOINT_START_SCHEDULER_DOC);
         conf.define(CAMEL_SOURCE_AS2_ENDPOINT_TIME_UNIT_CONF, ConfigDef.Type.STRING, CAMEL_SOURCE_AS2_ENDPOINT_TIME_UNIT_DEFAULT, ConfigDef.Importance.MEDIUM, CAMEL_SOURCE_AS2_ENDPOINT_TIME_UNIT_DOC);
         conf.define(CAMEL_SOURCE_AS2_ENDPOINT_USE_FIXED_DELAY_CONF, ConfigDef.Type.BOOLEAN, CAMEL_SOURCE_AS2_ENDPOINT_USE_FIXED_DELAY_DEFAULT, ConfigDef.Importance.MEDIUM, CAMEL_SOURCE_AS2_ENDPOINT_USE_FIXED_DELAY_DOC);
-        conf.define(CAMEL_SOURCE_AS2_COMPONENT_CONFIGURATION_CONF, ConfigDef.Type.STRING, CAMEL_SOURCE_AS2_COMPONENT_CONFIGURATION_DEFAULT, ConfigDef.Importance.MEDIUM, CAMEL_SOURCE_AS2_COMPONENT_CONFIGURATION_DOC);
         conf.define(CAMEL_SOURCE_AS2_COMPONENT_BRIDGE_ERROR_HANDLER_CONF, ConfigDef.Type.BOOLEAN, CAMEL_SOURCE_AS2_COMPONENT_BRIDGE_ERROR_HANDLER_DEFAULT, ConfigDef.Importance.MEDIUM, CAMEL_SOURCE_AS2_COMPONENT_BRIDGE_ERROR_HANDLER_DOC);
         conf.define(CAMEL_SOURCE_AS2_COMPONENT_BASIC_PROPERTY_BINDING_CONF, ConfigDef.Type.BOOLEAN, CAMEL_SOURCE_AS2_COMPONENT_BASIC_PROPERTY_BINDING_DEFAULT, ConfigDef.Importance.MEDIUM, CAMEL_SOURCE_AS2_COMPONENT_BASIC_PROPERTY_BINDING_DOC);
+        conf.define(CAMEL_SOURCE_AS2_COMPONENT_CONFIGURATION_CONF, ConfigDef.Type.STRING, CAMEL_SOURCE_AS2_COMPONENT_CONFIGURATION_DEFAULT, ConfigDef.Importance.MEDIUM, CAMEL_SOURCE_AS2_COMPONENT_CONFIGURATION_DOC);
         return conf;
     }
 }

@@ -56,7 +56,7 @@ public class CamelSjms2SinkConnectorConfig extends CamelSinkConnectorConfig {
     public static final Boolean CAMEL_SINK_SJMS2_ENDPOINT_PREFILL_POOL_DEFAULT = true;
     public static final String CAMEL_SINK_SJMS2_ENDPOINT_RESPONSE_TIME_OUT_CONF = "camel.sink.endpoint.responseTimeOut";
     public static final String CAMEL_SINK_SJMS2_ENDPOINT_RESPONSE_TIME_OUT_DOC = "Sets the amount of time we should wait before timing out a InOut response.";
-    public static final Long CAMEL_SINK_SJMS2_ENDPOINT_RESPONSE_TIME_OUT_DEFAULT = 5000L;
+    public static final Long CAMEL_SINK_SJMS2_ENDPOINT_RESPONSE_TIME_OUT_DEFAULT = 5L;
     public static final String CAMEL_SINK_SJMS2_ENDPOINT_ASYNC_START_LISTENER_CONF = "camel.sink.endpoint.asyncStartListener";
     public static final String CAMEL_SINK_SJMS2_ENDPOINT_ASYNC_START_LISTENER_DOC = "Whether to startup the consumer message listener asynchronously, when starting a route. For example if a JmsConsumer cannot get a connection to a remote JMS broker, then it may block while retrying and/or failover. This will cause Camel to block while starting routes. By setting this option to true, you will let routes startup, while the JmsConsumer connects to the JMS broker using a dedicated thread in asynchronous mode. If this option is used, then beware that if the connection could not be established, then an exception is logged at WARN level, and the consumer will not be able to receive messages; You can then restart the route to retry.";
     public static final Boolean CAMEL_SINK_SJMS2_ENDPOINT_ASYNC_START_LISTENER_DEFAULT = false;

@@ -71,13 +71,13 @@ public class CamelScpSinkConnectorConfig extends CamelSinkConnectorConfig {
     public static final Integer CAMEL_SINK_SCP_ENDPOINT_CONNECT_TIMEOUT_DEFAULT = 10000;
     public static final String CAMEL_SINK_SCP_ENDPOINT_SO_TIMEOUT_CONF = "camel.sink.endpoint.soTimeout";
     public static final String CAMEL_SINK_SCP_ENDPOINT_SO_TIMEOUT_DOC = "Sets the so timeout FTP and FTPS Only for Camel 2.4. SFTP for Camel 2.14.3/2.15.3/2.16 onwards. Is the SocketOptions.SO_TIMEOUT value in millis. Recommended option is to set this to 300000 so as not have a hanged connection. On SFTP this option is set as timeout on the JSCH Session instance.";
-    public static final Integer CAMEL_SINK_SCP_ENDPOINT_SO_TIMEOUT_DEFAULT = 300000;
+    public static final Integer CAMEL_SINK_SCP_ENDPOINT_SO_TIMEOUT_DEFAULT = 5;
     public static final String CAMEL_SINK_SCP_ENDPOINT_SYNCHRONOUS_CONF = "camel.sink.endpoint.synchronous";
     public static final String CAMEL_SINK_SCP_ENDPOINT_SYNCHRONOUS_DOC = "Sets whether synchronous processing should be strictly used, or Camel is allowed to use asynchronous processing (if supported).";
     public static final Boolean CAMEL_SINK_SCP_ENDPOINT_SYNCHRONOUS_DEFAULT = false;
     public static final String CAMEL_SINK_SCP_ENDPOINT_TIMEOUT_CONF = "camel.sink.endpoint.timeout";
     public static final String CAMEL_SINK_SCP_ENDPOINT_TIMEOUT_DOC = "Sets the data timeout for waiting for reply Used only by FTPClient";
-    public static final Integer CAMEL_SINK_SCP_ENDPOINT_TIMEOUT_DEFAULT = 30000;
+    public static final Integer CAMEL_SINK_SCP_ENDPOINT_TIMEOUT_DEFAULT = 30;
     public static final String CAMEL_SINK_SCP_ENDPOINT_KNOWN_HOSTS_FILE_CONF = "camel.sink.endpoint.knownHostsFile";
     public static final String CAMEL_SINK_SCP_ENDPOINT_KNOWN_HOSTS_FILE_DOC = "Sets the known_hosts file, so that the jsch endpoint can do host key verification. You can prefix with classpath: to load the file from classpath instead of file system.";
     public static final String CAMEL_SINK_SCP_ENDPOINT_KNOWN_HOSTS_FILE_DEFAULT = null;

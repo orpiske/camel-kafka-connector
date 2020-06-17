@@ -46,10 +46,10 @@ public class CamelDebeziumsqlserverSourceConnectorConfig
     public static final String CAMEL_SOURCE_DEBEZIUMSQLSERVER_ENDPOINT_OFFSET_COMMIT_POLICY_DEFAULT = "io.debezium.embedded.spi.OffsetCommitPolicy.PeriodicCommitOffsetPolicy";
     public static final String CAMEL_SOURCE_DEBEZIUMSQLSERVER_ENDPOINT_OFFSET_COMMIT_TIMEOUT_MS_CONF = "camel.source.endpoint.offsetCommitTimeoutMs";
     public static final String CAMEL_SOURCE_DEBEZIUMSQLSERVER_ENDPOINT_OFFSET_COMMIT_TIMEOUT_MS_DOC = "Maximum number of milliseconds to wait for records to flush and partition offset data to be committed to offset storage before cancelling the process and restoring the offset data to be committed in a future attempt. The default is 5 seconds.";
-    public static final Long CAMEL_SOURCE_DEBEZIUMSQLSERVER_ENDPOINT_OFFSET_COMMIT_TIMEOUT_MS_DEFAULT = 5000L;
+    public static final Long CAMEL_SOURCE_DEBEZIUMSQLSERVER_ENDPOINT_OFFSET_COMMIT_TIMEOUT_MS_DEFAULT = 5L;
     public static final String CAMEL_SOURCE_DEBEZIUMSQLSERVER_ENDPOINT_OFFSET_FLUSH_INTERVAL_MS_CONF = "camel.source.endpoint.offsetFlushIntervalMs";
     public static final String CAMEL_SOURCE_DEBEZIUMSQLSERVER_ENDPOINT_OFFSET_FLUSH_INTERVAL_MS_DOC = "Interval at which to try committing offsets. The default is 1 minute.";
-    public static final Long CAMEL_SOURCE_DEBEZIUMSQLSERVER_ENDPOINT_OFFSET_FLUSH_INTERVAL_MS_DEFAULT = 60000L;
+    public static final Long CAMEL_SOURCE_DEBEZIUMSQLSERVER_ENDPOINT_OFFSET_FLUSH_INTERVAL_MS_DEFAULT = 60L;
     public static final String CAMEL_SOURCE_DEBEZIUMSQLSERVER_ENDPOINT_OFFSET_STORAGE_CONF = "camel.source.endpoint.offsetStorage";
     public static final String CAMEL_SOURCE_DEBEZIUMSQLSERVER_ENDPOINT_OFFSET_STORAGE_DOC = "The name of the Java class that is responsible for persistence of connector offsets.";
     public static final String CAMEL_SOURCE_DEBEZIUMSQLSERVER_ENDPOINT_OFFSET_STORAGE_DEFAULT = "org.apache.kafka.connect.storage.FileOffsetBackingStore";
@@ -154,7 +154,7 @@ public class CamelDebeziumsqlserverSourceConnectorConfig
     public static final Integer CAMEL_SOURCE_DEBEZIUMSQLSERVER_ENDPOINT_SNAPSHOT_FETCH_SIZE_DEFAULT = null;
     public static final String CAMEL_SOURCE_DEBEZIUMSQLSERVER_ENDPOINT_SNAPSHOT_LOCK_TIMEOUT_MS_CONF = "camel.source.endpoint.snapshotLockTimeoutMs";
     public static final String CAMEL_SOURCE_DEBEZIUMSQLSERVER_ENDPOINT_SNAPSHOT_LOCK_TIMEOUT_MS_DOC = "The maximum number of millis to wait for table locks at the beginning of a snapshot. If locks cannot be acquired in this time frame, the snapshot will be aborted. Defaults to 10 seconds";
-    public static final Long CAMEL_SOURCE_DEBEZIUMSQLSERVER_ENDPOINT_SNAPSHOT_LOCK_TIMEOUT_MS_DEFAULT = 10000L;
+    public static final Long CAMEL_SOURCE_DEBEZIUMSQLSERVER_ENDPOINT_SNAPSHOT_LOCK_TIMEOUT_MS_DEFAULT = 10L;
     public static final String CAMEL_SOURCE_DEBEZIUMSQLSERVER_ENDPOINT_SNAPSHOT_MODE_CONF = "camel.source.endpoint.snapshotMode";
     public static final String CAMEL_SOURCE_DEBEZIUMSQLSERVER_ENDPOINT_SNAPSHOT_MODE_DOC = "The criteria for running a snapshot upon startup of the connector. Options include: 'initial' (the default) to specify the connector should run a snapshot only when no offsets are available for the logical server name; 'schema_only' to specify the connector should run a snapshot of the schema when no offsets are available for the logical server name.";
     public static final String CAMEL_SOURCE_DEBEZIUMSQLSERVER_ENDPOINT_SNAPSHOT_MODE_DEFAULT = "initial";
@@ -199,10 +199,10 @@ public class CamelDebeziumsqlserverSourceConnectorConfig
     public static final String CAMEL_SOURCE_DEBEZIUMSQLSERVER_COMPONENT_OFFSET_COMMIT_POLICY_DEFAULT = "io.debezium.embedded.spi.OffsetCommitPolicy.PeriodicCommitOffsetPolicy";
     public static final String CAMEL_SOURCE_DEBEZIUMSQLSERVER_COMPONENT_OFFSET_COMMIT_TIMEOUT_MS_CONF = "camel.component.debezium-sqlserver.offsetCommitTimeoutMs";
     public static final String CAMEL_SOURCE_DEBEZIUMSQLSERVER_COMPONENT_OFFSET_COMMIT_TIMEOUT_MS_DOC = "Maximum number of milliseconds to wait for records to flush and partition offset data to be committed to offset storage before cancelling the process and restoring the offset data to be committed in a future attempt. The default is 5 seconds.";
-    public static final Long CAMEL_SOURCE_DEBEZIUMSQLSERVER_COMPONENT_OFFSET_COMMIT_TIMEOUT_MS_DEFAULT = 5000L;
+    public static final Long CAMEL_SOURCE_DEBEZIUMSQLSERVER_COMPONENT_OFFSET_COMMIT_TIMEOUT_MS_DEFAULT = 5L;
     public static final String CAMEL_SOURCE_DEBEZIUMSQLSERVER_COMPONENT_OFFSET_FLUSH_INTERVAL_MS_CONF = "camel.component.debezium-sqlserver.offsetFlushIntervalMs";
     public static final String CAMEL_SOURCE_DEBEZIUMSQLSERVER_COMPONENT_OFFSET_FLUSH_INTERVAL_MS_DOC = "Interval at which to try committing offsets. The default is 1 minute.";
-    public static final Long CAMEL_SOURCE_DEBEZIUMSQLSERVER_COMPONENT_OFFSET_FLUSH_INTERVAL_MS_DEFAULT = 60000L;
+    public static final Long CAMEL_SOURCE_DEBEZIUMSQLSERVER_COMPONENT_OFFSET_FLUSH_INTERVAL_MS_DEFAULT = 60L;
     public static final String CAMEL_SOURCE_DEBEZIUMSQLSERVER_COMPONENT_OFFSET_STORAGE_CONF = "camel.component.debezium-sqlserver.offsetStorage";
     public static final String CAMEL_SOURCE_DEBEZIUMSQLSERVER_COMPONENT_OFFSET_STORAGE_DOC = "The name of the Java class that is responsible for persistence of connector offsets.";
     public static final String CAMEL_SOURCE_DEBEZIUMSQLSERVER_COMPONENT_OFFSET_STORAGE_DEFAULT = "org.apache.kafka.connect.storage.FileOffsetBackingStore";
@@ -298,7 +298,7 @@ public class CamelDebeziumsqlserverSourceConnectorConfig
     public static final Integer CAMEL_SOURCE_DEBEZIUMSQLSERVER_COMPONENT_SNAPSHOT_FETCH_SIZE_DEFAULT = null;
     public static final String CAMEL_SOURCE_DEBEZIUMSQLSERVER_COMPONENT_SNAPSHOT_LOCK_TIMEOUT_MS_CONF = "camel.component.debezium-sqlserver.snapshotLockTimeoutMs";
     public static final String CAMEL_SOURCE_DEBEZIUMSQLSERVER_COMPONENT_SNAPSHOT_LOCK_TIMEOUT_MS_DOC = "The maximum number of millis to wait for table locks at the beginning of a snapshot. If locks cannot be acquired in this time frame, the snapshot will be aborted. Defaults to 10 seconds";
-    public static final Long CAMEL_SOURCE_DEBEZIUMSQLSERVER_COMPONENT_SNAPSHOT_LOCK_TIMEOUT_MS_DEFAULT = 10000L;
+    public static final Long CAMEL_SOURCE_DEBEZIUMSQLSERVER_COMPONENT_SNAPSHOT_LOCK_TIMEOUT_MS_DEFAULT = 10L;
     public static final String CAMEL_SOURCE_DEBEZIUMSQLSERVER_COMPONENT_SNAPSHOT_MODE_CONF = "camel.component.debezium-sqlserver.snapshotMode";
     public static final String CAMEL_SOURCE_DEBEZIUMSQLSERVER_COMPONENT_SNAPSHOT_MODE_DOC = "The criteria for running a snapshot upon startup of the connector. Options include: 'initial' (the default) to specify the connector should run a snapshot only when no offsets are available for the logical server name; 'schema_only' to specify the connector should run a snapshot of the schema when no offsets are available for the logical server name.";
     public static final String CAMEL_SOURCE_DEBEZIUMSQLSERVER_COMPONENT_SNAPSHOT_MODE_DEFAULT = "initial";

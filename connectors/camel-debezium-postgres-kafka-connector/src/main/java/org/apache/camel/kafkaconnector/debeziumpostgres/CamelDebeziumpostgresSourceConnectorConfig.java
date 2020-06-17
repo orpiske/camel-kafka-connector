@@ -46,10 +46,10 @@ public class CamelDebeziumpostgresSourceConnectorConfig
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_ENDPOINT_OFFSET_COMMIT_POLICY_DEFAULT = "io.debezium.embedded.spi.OffsetCommitPolicy.PeriodicCommitOffsetPolicy";
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_ENDPOINT_OFFSET_COMMIT_TIMEOUT_MS_CONF = "camel.source.endpoint.offsetCommitTimeoutMs";
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_ENDPOINT_OFFSET_COMMIT_TIMEOUT_MS_DOC = "Maximum number of milliseconds to wait for records to flush and partition offset data to be committed to offset storage before cancelling the process and restoring the offset data to be committed in a future attempt. The default is 5 seconds.";
-    public static final Long CAMEL_SOURCE_DEBEZIUMPOSTGRES_ENDPOINT_OFFSET_COMMIT_TIMEOUT_MS_DEFAULT = 5000L;
+    public static final Long CAMEL_SOURCE_DEBEZIUMPOSTGRES_ENDPOINT_OFFSET_COMMIT_TIMEOUT_MS_DEFAULT = 5L;
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_ENDPOINT_OFFSET_FLUSH_INTERVAL_MS_CONF = "camel.source.endpoint.offsetFlushIntervalMs";
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_ENDPOINT_OFFSET_FLUSH_INTERVAL_MS_DOC = "Interval at which to try committing offsets. The default is 1 minute.";
-    public static final Long CAMEL_SOURCE_DEBEZIUMPOSTGRES_ENDPOINT_OFFSET_FLUSH_INTERVAL_MS_DEFAULT = 60000L;
+    public static final Long CAMEL_SOURCE_DEBEZIUMPOSTGRES_ENDPOINT_OFFSET_FLUSH_INTERVAL_MS_DEFAULT = 60L;
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_ENDPOINT_OFFSET_STORAGE_CONF = "camel.source.endpoint.offsetStorage";
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_ENDPOINT_OFFSET_STORAGE_DOC = "The name of the Java class that is responsible for persistence of connector offsets.";
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_ENDPOINT_OFFSET_STORAGE_DEFAULT = "org.apache.kafka.connect.storage.FileOffsetBackingStore";
@@ -190,7 +190,7 @@ public class CamelDebeziumpostgresSourceConnectorConfig
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_ENDPOINT_SLOT_NAME_DEFAULT = "debezium";
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_ENDPOINT_SLOT_RETRY_DELAY_MS_CONF = "camel.source.endpoint.slotRetryDelayMs";
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_ENDPOINT_SLOT_RETRY_DELAY_MS_DOC = "The number of milli-seconds to wait between retry attempts when the connector fails to connect to a replication slot.";
-    public static final Long CAMEL_SOURCE_DEBEZIUMPOSTGRES_ENDPOINT_SLOT_RETRY_DELAY_MS_DEFAULT = 10000L;
+    public static final Long CAMEL_SOURCE_DEBEZIUMPOSTGRES_ENDPOINT_SLOT_RETRY_DELAY_MS_DEFAULT = 10L;
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_ENDPOINT_SLOT_STREAM_PARAMS_CONF = "camel.source.endpoint.slotStreamParams";
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_ENDPOINT_SLOT_STREAM_PARAMS_DOC = "Any optional parameters used by logical decoding plugin. Semi-colon separated. E.g. 'add-tables=public.table,public.table2;include-lsn=true'";
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_ENDPOINT_SLOT_STREAM_PARAMS_DEFAULT = null;
@@ -205,7 +205,7 @@ public class CamelDebeziumpostgresSourceConnectorConfig
     public static final Integer CAMEL_SOURCE_DEBEZIUMPOSTGRES_ENDPOINT_SNAPSHOT_FETCH_SIZE_DEFAULT = null;
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_ENDPOINT_SNAPSHOT_LOCK_TIMEOUT_MS_CONF = "camel.source.endpoint.snapshotLockTimeoutMs";
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_ENDPOINT_SNAPSHOT_LOCK_TIMEOUT_MS_DOC = "The maximum number of millis to wait for table locks at the beginning of a snapshot. If locks cannot be acquired in this time frame, the snapshot will be aborted. Defaults to 10 seconds";
-    public static final Long CAMEL_SOURCE_DEBEZIUMPOSTGRES_ENDPOINT_SNAPSHOT_LOCK_TIMEOUT_MS_DEFAULT = 10000L;
+    public static final Long CAMEL_SOURCE_DEBEZIUMPOSTGRES_ENDPOINT_SNAPSHOT_LOCK_TIMEOUT_MS_DEFAULT = 10L;
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_ENDPOINT_SNAPSHOT_MODE_CONF = "camel.source.endpoint.snapshotMode";
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_ENDPOINT_SNAPSHOT_MODE_DOC = "The criteria for running a snapshot upon startup of the connector. Options include: 'always' to specify that the connector run a snapshot each time it starts up; 'initial' (the default) to specify the connector can run a snapshot only when no offsets are available for the logical server name; 'initial_only' same as 'initial' except the connector should stop after completing the snapshot and before it would normally start emitting changes;'never' to specify the connector should never run a snapshot and that upon first startup the connector should read from the last position (LSN) recorded by the server; and'exported' to specify the connector should run a snapshot based on the position when the replication slot was created; 'custom' to specify a custom class with 'snapshot.custom_class' which will be loaded and used to determine the snapshot, see docs for more details.";
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_ENDPOINT_SNAPSHOT_MODE_DEFAULT = "initial";
@@ -217,7 +217,7 @@ public class CamelDebeziumpostgresSourceConnectorConfig
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_ENDPOINT_SOURCE_STRUCT_VERSION_DEFAULT = "v2";
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_ENDPOINT_STATUS_UPDATE_INTERVAL_MS_CONF = "camel.source.endpoint.statusUpdateIntervalMs";
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_ENDPOINT_STATUS_UPDATE_INTERVAL_MS_DOC = "Frequency in milliseconds for sending replication connection status updates to the server. Defaults to 10 seconds (10000 ms).";
-    public static final Integer CAMEL_SOURCE_DEBEZIUMPOSTGRES_ENDPOINT_STATUS_UPDATE_INTERVAL_MS_DEFAULT = 10000;
+    public static final Integer CAMEL_SOURCE_DEBEZIUMPOSTGRES_ENDPOINT_STATUS_UPDATE_INTERVAL_MS_DEFAULT = 10;
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_ENDPOINT_TABLE_BLACKLIST_CONF = "camel.source.endpoint.tableBlacklist";
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_ENDPOINT_TABLE_BLACKLIST_DOC = "Description is not available here, please check Debezium website for corresponding key 'table.blacklist' description.";
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_ENDPOINT_TABLE_BLACKLIST_DEFAULT = null;
@@ -256,10 +256,10 @@ public class CamelDebeziumpostgresSourceConnectorConfig
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_COMPONENT_OFFSET_COMMIT_POLICY_DEFAULT = "io.debezium.embedded.spi.OffsetCommitPolicy.PeriodicCommitOffsetPolicy";
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_COMPONENT_OFFSET_COMMIT_TIMEOUT_MS_CONF = "camel.component.debezium-postgres.offsetCommitTimeoutMs";
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_COMPONENT_OFFSET_COMMIT_TIMEOUT_MS_DOC = "Maximum number of milliseconds to wait for records to flush and partition offset data to be committed to offset storage before cancelling the process and restoring the offset data to be committed in a future attempt. The default is 5 seconds.";
-    public static final Long CAMEL_SOURCE_DEBEZIUMPOSTGRES_COMPONENT_OFFSET_COMMIT_TIMEOUT_MS_DEFAULT = 5000L;
+    public static final Long CAMEL_SOURCE_DEBEZIUMPOSTGRES_COMPONENT_OFFSET_COMMIT_TIMEOUT_MS_DEFAULT = 5L;
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_COMPONENT_OFFSET_FLUSH_INTERVAL_MS_CONF = "camel.component.debezium-postgres.offsetFlushIntervalMs";
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_COMPONENT_OFFSET_FLUSH_INTERVAL_MS_DOC = "Interval at which to try committing offsets. The default is 1 minute.";
-    public static final Long CAMEL_SOURCE_DEBEZIUMPOSTGRES_COMPONENT_OFFSET_FLUSH_INTERVAL_MS_DEFAULT = 60000L;
+    public static final Long CAMEL_SOURCE_DEBEZIUMPOSTGRES_COMPONENT_OFFSET_FLUSH_INTERVAL_MS_DEFAULT = 60L;
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_COMPONENT_OFFSET_STORAGE_CONF = "camel.component.debezium-postgres.offsetStorage";
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_COMPONENT_OFFSET_STORAGE_DOC = "The name of the Java class that is responsible for persistence of connector offsets.";
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_COMPONENT_OFFSET_STORAGE_DEFAULT = "org.apache.kafka.connect.storage.FileOffsetBackingStore";
@@ -391,7 +391,7 @@ public class CamelDebeziumpostgresSourceConnectorConfig
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_COMPONENT_SLOT_NAME_DEFAULT = "debezium";
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_COMPONENT_SLOT_RETRY_DELAY_MS_CONF = "camel.component.debezium-postgres.slotRetryDelayMs";
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_COMPONENT_SLOT_RETRY_DELAY_MS_DOC = "The number of milli-seconds to wait between retry attempts when the connector fails to connect to a replication slot.";
-    public static final Long CAMEL_SOURCE_DEBEZIUMPOSTGRES_COMPONENT_SLOT_RETRY_DELAY_MS_DEFAULT = 10000L;
+    public static final Long CAMEL_SOURCE_DEBEZIUMPOSTGRES_COMPONENT_SLOT_RETRY_DELAY_MS_DEFAULT = 10L;
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_COMPONENT_SLOT_STREAM_PARAMS_CONF = "camel.component.debezium-postgres.slotStreamParams";
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_COMPONENT_SLOT_STREAM_PARAMS_DOC = "Any optional parameters used by logical decoding plugin. Semi-colon separated. E.g. 'add-tables=public.table,public.table2;include-lsn=true'";
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_COMPONENT_SLOT_STREAM_PARAMS_DEFAULT = null;
@@ -406,7 +406,7 @@ public class CamelDebeziumpostgresSourceConnectorConfig
     public static final Integer CAMEL_SOURCE_DEBEZIUMPOSTGRES_COMPONENT_SNAPSHOT_FETCH_SIZE_DEFAULT = null;
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_COMPONENT_SNAPSHOT_LOCK_TIMEOUT_MS_CONF = "camel.component.debezium-postgres.snapshotLockTimeoutMs";
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_COMPONENT_SNAPSHOT_LOCK_TIMEOUT_MS_DOC = "The maximum number of millis to wait for table locks at the beginning of a snapshot. If locks cannot be acquired in this time frame, the snapshot will be aborted. Defaults to 10 seconds";
-    public static final Long CAMEL_SOURCE_DEBEZIUMPOSTGRES_COMPONENT_SNAPSHOT_LOCK_TIMEOUT_MS_DEFAULT = 10000L;
+    public static final Long CAMEL_SOURCE_DEBEZIUMPOSTGRES_COMPONENT_SNAPSHOT_LOCK_TIMEOUT_MS_DEFAULT = 10L;
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_COMPONENT_SNAPSHOT_MODE_CONF = "camel.component.debezium-postgres.snapshotMode";
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_COMPONENT_SNAPSHOT_MODE_DOC = "The criteria for running a snapshot upon startup of the connector. Options include: 'always' to specify that the connector run a snapshot each time it starts up; 'initial' (the default) to specify the connector can run a snapshot only when no offsets are available for the logical server name; 'initial_only' same as 'initial' except the connector should stop after completing the snapshot and before it would normally start emitting changes;'never' to specify the connector should never run a snapshot and that upon first startup the connector should read from the last position (LSN) recorded by the server; and'exported' to specify the connector should run a snapshot based on the position when the replication slot was created; 'custom' to specify a custom class with 'snapshot.custom_class' which will be loaded and used to determine the snapshot, see docs for more details.";
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_COMPONENT_SNAPSHOT_MODE_DEFAULT = "initial";
@@ -418,7 +418,7 @@ public class CamelDebeziumpostgresSourceConnectorConfig
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_COMPONENT_SOURCE_STRUCT_VERSION_DEFAULT = "v2";
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_COMPONENT_STATUS_UPDATE_INTERVAL_MS_CONF = "camel.component.debezium-postgres.statusUpdateIntervalMs";
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_COMPONENT_STATUS_UPDATE_INTERVAL_MS_DOC = "Frequency in milliseconds for sending replication connection status updates to the server. Defaults to 10 seconds (10000 ms).";
-    public static final Integer CAMEL_SOURCE_DEBEZIUMPOSTGRES_COMPONENT_STATUS_UPDATE_INTERVAL_MS_DEFAULT = 10000;
+    public static final Integer CAMEL_SOURCE_DEBEZIUMPOSTGRES_COMPONENT_STATUS_UPDATE_INTERVAL_MS_DEFAULT = 10;
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_COMPONENT_TABLE_BLACKLIST_CONF = "camel.component.debezium-postgres.tableBlacklist";
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_COMPONENT_TABLE_BLACKLIST_DOC = "Description is not available here, please check Debezium website for corresponding key 'table.blacklist' description.";
     public static final String CAMEL_SOURCE_DEBEZIUMPOSTGRES_COMPONENT_TABLE_BLACKLIST_DEFAULT = null;
