@@ -1,9 +1,9 @@
 REGISTRY?=docker.io
 PROJECT?=otavio021
 KAFKA_VERSION?=2.4.1
-CAMEL_KAFKA_CONNECTOR_VERSION=0.3.0-SNAPSHOT
+CAMEL_KAFKA_CONNECTOR_VERSION=0.4.0-SNAPSHOT
 
-CONNECTORS=twitter-timeline twitter-search elasticsearch-rest cql aws-sqs sjms2
+CONNECTORS=aws-kinesis aws-sqs aws-sns aws-s3 cql elasticsearch-rest file hdfs http salesforce slack sjms2 syslog timer twitter-timeline twitter-search
 
 $(CONNECTORS):
 	docker build -t camel-kafka-connector-$@-distributed:latest --build-arg CAMEL_KAFKA_CONNECTOR_VERSION=$(CAMEL_KAFKA_CONNECTOR_VERSION) --build-arg KAFKA_VERSION=$(KAFKA_VERSION) --build-arg CONNECTOR_NAME=$@ .
