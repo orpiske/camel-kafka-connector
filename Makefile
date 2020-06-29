@@ -1,6 +1,6 @@
 REGISTRY?=docker.io
 PROJECT?=otavio021
-KAFKA_VERSION?=2.4.1
+KAFKA_VERSION?=2.5.0
 CAMEL_KAFKA_CONNECTOR_VERSION=0.4.0-SNAPSHOT
 
 CONNECTORS=aws-kinesis aws-sqs aws-sns aws-s3 cql elasticsearch-rest file hdfs http salesforce slack sjms2 syslog timer twitter-timeline twitter-search
