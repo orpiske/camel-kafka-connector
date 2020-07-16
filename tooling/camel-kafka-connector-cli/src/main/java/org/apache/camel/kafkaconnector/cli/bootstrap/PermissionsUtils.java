@@ -15,24 +15,33 @@
  * limitations under the License.
  */
 
-package org.apache.camel.kafkaconnector.cli.commands;
+package org.apache.camel.kafkaconnector.cli.bootstrap;
 
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Options;
+import java.io.File;
 
-public interface Command {
+public class PermissionsUtils {
+
+    private PermissionsUtils() {}
+
 
     /**
-     * Prints the help for the action and exit
-     * @param options the options object
-     * @param code the exit code
+     * Given a file mode, set the permissions accordingly
+     *
+     * @param mode The file/directory mode
+     * @param outFile The outFile to have the permissions set
      */
-    default void help(final Options options, int code) {
-        HelpFormatter formatter = new HelpFormatter();
+    public static void setPermissions(int mode, File outFile) {
+        int canOthersExecute = (mode >> 3) & 1;
+        int canOwnerExecute = (mode >> 6) & 1;
 
-        formatter.printHelp("camel-kafka-connector-cli", options);
-        System.exit(code);
+        if (canOthersExecute == 1) {
+            outFile.setExecutable(true, false);
+        }
+        else {
+            if (canOthersExecute == 0 && canOwnerExecute == 1) {
+                outFile.setExecutable(true, true);
+            }
+        }
     }
 
-    int run();
 }
