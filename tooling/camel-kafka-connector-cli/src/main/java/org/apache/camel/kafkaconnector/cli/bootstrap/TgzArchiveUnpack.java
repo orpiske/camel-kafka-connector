@@ -37,25 +37,27 @@ public class TgzArchiveUnpack {
         return originalName;
     }
 
+    private boolean removeFile(File uncompressedArchiveFile) {
+        return uncompressedArchiveFile.exists() && !uncompressedArchiveFile.delete();
+    }
 
-    /*
-     * (non-Javadoc)
-     * @see org.ssps.common.archive.Archive#unpack(java.lang.String, java.lang.String)
-     */
-    public long unpack(String source, String destination) throws IOException {
-        File compressedFileSource = new File(source);
+    private File getUncompressedFileName(File compressedFileSource, File destinationDir) throws IOException {
+        String uncompressedArchiveFileName = replaceCompressedFileExtension(compressedFileSource.getName());
 
-        String uncompressedArchiveFileName = destination
-                + File.separator
-                + replaceCompressedFileExtension(compressedFileSource.getName());
-
-        File uncompressedArchiveFile = new File(uncompressedArchiveFileName);
-        if (uncompressedArchiveFile.exists()) {
-            if (!uncompressedArchiveFile.delete()) {
-                throw new IOException(String.format("A previously decompressed file exists: %s and couldn't be deleted",
-                        uncompressedArchiveFile));
-            }
+        File uncompressedArchiveFile = new File(destinationDir, uncompressedArchiveFileName);
+        if (removeFile(uncompressedArchiveFile)) {
+            throw new IOException(String.format("A previously decompressed file exists: %s and couldn't be deleted",
+                    uncompressedArchiveFile));
         }
+
+        return uncompressedArchiveFile;
+    }
+
+
+
+
+    public long unpack(File compressedFileSource, File destinationDirectory) throws IOException {
+        File uncompressedArchiveFile = getUncompressedFileName(compressedFileSource, destinationDirectory);
 
         try {
             CompressedArchiveUtils.gzDecompress(compressedFileSource, uncompressedArchiveFile);
@@ -63,21 +65,19 @@ public class TgzArchiveUnpack {
             throw new IOException("Unable to decompress archive file: I/O error", e);
         }
 
-        File destinationDirectory = new File(destination);
-
         try {
             return TarArchiveUtils.unpack(uncompressedArchiveFile, destinationDirectory,
                     ArchiveStreamFactory.TAR);
         } catch (ArchiveException e) {
             e.printStackTrace();
         } finally {
-            if (uncompressedArchiveFile.exists()) {
-                if (!uncompressedArchiveFile.delete()) {
-                    uncompressedArchiveFile.deleteOnExit();
-                }
+            if (!removeFile(uncompressedArchiveFile)) {
+                uncompressedArchiveFile.deleteOnExit();
             }
         }
 
         return 0;
     }
+
+
 }
