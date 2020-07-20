@@ -17,6 +17,11 @@
 
 package org.apache.camel.kafkaconnector.cli.commands;
 
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
+import org.apache.camel.kafkaconnector.cli.bootstrap.UnpackStep;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -26,6 +31,7 @@ import org.apache.commons.cli.ParseException;
 public class Bootstrap implements Command {
     private CommandLine cmdLine;
 
+    private List<String> connectorPackages;
     private String connectorName;
     private String connectorVersion;
     private String mirror;
@@ -37,10 +43,11 @@ public class Bootstrap implements Command {
         Options options = new Options();
 
         options.addOption("h", "help", false, "prints the help");
+        options.addOption(null, "connector-packages", true, "command-separate path(s) to local connector file(s)");
         options.addOption(null, "connector-name", true, "the connector name");
         options.addOption(null, "connector-version", true, "the connector version");
         options.addOption(null, "mirror", true, "the mirror where to download the connector package");
-        options.addOption(null, "destination", false, "the directory where to unpack the connector");
+        options.addOption(null, "destination", true, "the directory where to unpack the connector");
 
 
         try {
@@ -50,9 +57,15 @@ public class Bootstrap implements Command {
             help(options, -1);
         }
 
-        connectorName = cmdLine.getOptionValue("connector-name");
-        connectorVersion = cmdLine.getOptionValue("connector-version");
-        mirror = cmdLine.getOptionValue("mirror");
+        String pathList = cmdLine.getOptionValue("connector-packages");
+        if (pathList != null && !pathList.isEmpty()) {
+            connectorPackages = Arrays.asList(pathList.split(","));
+        } else {
+            connectorName = cmdLine.getOptionValue("connector-name");
+            connectorVersion = cmdLine.getOptionValue("connector-version");
+            mirror = cmdLine.getOptionValue("mirror");
+        }
+
         destination = cmdLine.getOptionValue("destination");
     }
 
@@ -61,6 +74,19 @@ public class Bootstrap implements Command {
         // Find
         // Download
         // Unpack
+
+        for (String connector : connectorPackages) {
+            UnpackStep unpackStep = new UnpackStep(connector, destination);
+
+            try {
+                unpackStep.step();
+            } catch (IOException e) {
+                e.printStackTrace();
+
+                return 1;
+            }
+        }
+
         // Cleanup
 
         return 0;
