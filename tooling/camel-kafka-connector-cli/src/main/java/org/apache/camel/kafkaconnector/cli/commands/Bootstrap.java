@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.camel.kafkaconnector.cli.bootstrap.FindPackageStep;
 import org.apache.camel.kafkaconnector.cli.bootstrap.UnpackStep;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -75,17 +76,22 @@ public class Bootstrap implements Command {
         // Download
         // Unpack
 
-        for (String connector : connectorPackages) {
-            UnpackStep unpackStep = new UnpackStep(connector, destination);
+        FindPackageStep findPackageStep = new FindPackageStep(connectorName, connectorVersion, mirror);
 
-            try {
-                unpackStep.step();
-            } catch (IOException e) {
-                e.printStackTrace();
+        findPackageStep.step();
 
-                return 1;
-            }
-        }
+
+//        for (String connector : connectorPackages) {
+//            UnpackStep unpackStep = new UnpackStep(connector, destination);
+//
+//            try {
+//                unpackStep.step();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//
+//                return 1;
+//            }
+//        }
 
         // Cleanup
 
