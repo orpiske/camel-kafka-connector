@@ -60,12 +60,34 @@ public class FindPackageStep {
 
             MavenSearchResponse mavenSearchResponse = parser.readValueAs(MavenSearchResponse.class);
 
-            String mavenDepTxt = "<dependency>\n\t<groupId>%s</groupId>\n\t<artifactId>%s</artifactId>\n\t<version>%s</version>\n</dependency>\n";
-            for (MavenSearchResponseDoc doc : mavenSearchResponse.getResponse().getDocs()) {
-                System.out.println(String.format("============ %s:%s", doc.getId(), doc.getLatestVersion()));
-                System.out.println(String.format(mavenDepTxt, doc.getGroup(), doc.getArtifact(), doc.getLatestVersion()));
+            int numFound = mavenSearchResponse.getResponse().getNumFound();
+            if (numFound == 0) {
+                System.err.println("No artifacts found for that component");
+
+                return;
+            } else {
+                if (numFound > 1) {
+                    System.err.println("There are too many artifacts: " + numFound + " artifacts found: ");
+                    for (MavenSearchResponseDoc doc : mavenSearchResponse.getResponse().getDocs()) {
+                        System.err.printf("%s:%s%n", doc.getId(), doc.getLatestVersion());
+                    }
+
+                    return;
+                }
             }
 
+            String group = mavenSearchResponse.getResponse().getDocs().get(0).getGroup();
+            String artifact = mavenSearchResponse.getResponse().getDocs().get(0).getArtifact();
+            String version  = mavenSearchResponse.getResponse().getDocs().get(0).getLatestVersion();
+
+            String path = group.replace(".", "/");
+
+
+            String downloadUrl = String.format(
+                    "%s/classic/remotecontent?filepath=%s/%s/%s/%s-%s-package.tar.gz", DEFAULT_SEARCH_MIRROR, path,
+                    artifact, version, artifact, version);
+
+            System.out.println("Download link: " + downloadUrl);
         } catch (Exception e) {
             System.out.println("Failed: " + e.getMessage());
         }
