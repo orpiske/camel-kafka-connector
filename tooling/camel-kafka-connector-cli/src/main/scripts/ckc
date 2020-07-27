@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+cygwin=false
+darwin=false
+mingw=false
+
+# OS specific support.  $var _must_ be set to either true or false.
+case "$(uname)" in
+    CYGWIN*) cygwin=true ;;
+    MINGW*) mingw=true ;;
+    Darwin*) darwin=true ;;
+esac
+
+# For Cygwin, ensure paths are in UNIX format before anything is touched
+if ${cygwin}; then
+    : ${JAVA_HOME:=$(cygpath --unix "${JAVA_HOME}")}
+    : ${CLASSPATH:=$(cygpath --path --unix "${CLASSPATH}")}
+fi
+
+if ${darwin}; then
+    : ${JAVA_VERSION:="CurrentJDK"}
+    : ${JAVA_HOME:="/System/Library/Frameworks/JavaVM.framework/Versions/${JAVA_VERSION}/Home"}
+fi
+
+# Installation paths
+localDir="$(dirname $0)"
+installDir="$(dirname "${localDir}")"
+
+if [[ ${installDir} == "." ]] ; then
+	installDir=".."
+fi
+
+CURATOR_CLASSPATH=""
+
+for jarfile in "${installDir}"/bin/*.jar ; do
+    if [[ -z "${CURATOR_CLASSPATH}" ]] ; then
+        CURATOR_CLASSPATH="${jarfile}"
+    else
+        CURATOR_CLASSPATH="${CURATOR_CLASSPATH}:${jarfile}"
+    fi
+done
+
+
+for jarfile in "${installDir}"/lib/*.jar ; do
+    if [[ -z "${CURATOR_CLASSPATH}" ]] ; then
+        CURATOR_CLASSPATH="${jarfile}"
+    else
+        CURATOR_CLASSPATH="${CURATOR_CLASSPATH}:${jarfile}"
+    fi
+done
+
+for jarfile in "${installDir}"/lib/ext/*.jar ; do
+    if [[ -z "${CURATOR_CLASSPATH}" ]] ; then
+        CURATOR_CLASSPATH="${jarfile}"
+    else
+        CURATOR_CLASSPATH="${CURATOR_CLASSPATH}:${jarfile}"
+    fi
+done
+
+
+export CURATOR_CLI_DEBUG_ARGS=""
+if [[ "${CURATOR_DEBUG}" == "y" ]] ; then
+    CURATOR_CLI_DEBUG_ARGS="-Xdebug -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n"
+fi
+
+mainClass="org.apache.camel.kafkaconnector.cli.main.Main"
+
+java -classpath ${CURATOR_CLASSPATH} ${CURATOR_CLI_DEBUG_ARGS} \
+    -Dorg.apache.camel.kafkaconnector.home="${installDir}" -Djava.awt.headless=true "${mainClass}" "$@"
