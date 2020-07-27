@@ -116,24 +116,34 @@
                     <target>${version.java}</target>
                 </configuration>
             </plugin>
-<!--            <plugin>-->
-<!--                <artifactId>maven-assembly-plugin</artifactId>-->
-<!--                <version>2.5.3</version>-->
-<!--                <configuration>-->
-<!--                    <descriptors>-->
-<!--                        <descriptor>src/main/assembly/package.xml</descriptor>-->
-<!--                    </descriptors>-->
-<!--                </configuration>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <id>make-assembly</id>-->
-<!--                        <phase>package</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>single</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>org.apache.camel.kafkaconnector.cli.main.Main</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptors>
+                        <descriptor>src/main/assembly/package.xml</descriptor>
+                    </descriptors>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
