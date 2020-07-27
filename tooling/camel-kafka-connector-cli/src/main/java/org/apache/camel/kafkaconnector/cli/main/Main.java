@@ -24,9 +24,6 @@ import org.apache.camel.kafkaconnector.cli.commands.Command;
 
 public class Main {
     private static final String VERSION = "0.4.0";
-//    static {
-//        LogConfigurator.defaultLogLevel();
-//    }
 
     /**
      * Prints the help for the action and exit
