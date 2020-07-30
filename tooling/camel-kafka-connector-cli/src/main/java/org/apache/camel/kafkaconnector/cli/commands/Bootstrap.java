@@ -21,7 +21,10 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.camel.kafkaconnector.cli.bootstrap.ConnectorPackageInfo;
+import org.apache.camel.kafkaconnector.cli.bootstrap.DownloadStep;
 import org.apache.camel.kafkaconnector.cli.bootstrap.FindPackageStep;
+import org.apache.camel.kafkaconnector.cli.bootstrap.PackageInfo;
 import org.apache.camel.kafkaconnector.cli.bootstrap.UnpackStep;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -72,14 +75,37 @@ public class Bootstrap implements Command {
 
     @Override
     public int run() {
-        // Find
-        // Download
-        // Unpack
-
         FindPackageStep findPackageStep = new FindPackageStep(connectorName, connectorVersion, mirror);
+        PackageInfo packageInfo;
 
-        findPackageStep.step();
+        try {
+            packageInfo = findPackageStep.step();
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
 
+            return 1;
+        }
+
+
+        DownloadStep downloadStep = new DownloadStep(destination);
+        ConnectorPackageInfo connectorPackageInfo;
+
+        try {
+            connectorPackageInfo = downloadStep.step(packageInfo);
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+
+            return 2;
+        }
+
+        UnpackStep unpackStep = new UnpackStep(connectorPackageInfo.getFile(), destination);
+        try {
+            unpackStep.step();
+        } catch (IOException e) {
+            e.printStackTrace();
+
+            return 1;
+        }
 
 //        for (String connector : connectorPackages) {
 //            UnpackStep unpackStep = new UnpackStep(connector, destination);

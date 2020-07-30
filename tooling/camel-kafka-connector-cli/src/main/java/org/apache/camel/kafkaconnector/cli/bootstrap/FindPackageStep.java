@@ -25,7 +25,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.MappingJsonFactory;
 
 public class FindPackageStep {
-    private static final String DEFAULT_SEARCH_MIRROR = "http://search.maven.org";
+    public static final String DEFAULT_SEARCH_MIRROR = "http://search.maven.org";
     private final String connectorName;
     private final String connectorVersion;
     private final String mirror;
@@ -45,51 +45,38 @@ public class FindPackageStep {
 
     }
 
-    public void step() {
+    public PackageInfo step() throws Exception {
         String request = String.format("%s/solrsearch/select?wt=json&q=g:\"%s\"+AND+a:\"%s\"", mirror,
                 groupName, connectorName);
 
         Response response = HTTPEasy.getClient(request).get();
 
         MappingJsonFactory factory = new MappingJsonFactory();
-        try {
-            InputStream stream = (InputStream) response.getEntity();
+        InputStream stream = (InputStream) response.getEntity();
 
+        JsonParser parser = factory.createParser(stream);
 
-            JsonParser parser = factory.createParser(stream);
+        MavenSearchResponse mavenSearchResponse = parser.readValueAs(MavenSearchResponse.class);
 
-            MavenSearchResponse mavenSearchResponse = parser.readValueAs(MavenSearchResponse.class);
-
-            int numFound = mavenSearchResponse.getResponse().getNumFound();
-            if (numFound == 0) {
-                System.err.println("No artifacts found for that component");
-
-                return;
-            } else {
-                if (numFound > 1) {
-                    System.err.println("There are too many artifacts: " + numFound + " artifacts found: ");
-                    for (MavenSearchResponseDoc doc : mavenSearchResponse.getResponse().getDocs()) {
-                        System.err.printf("%s:%s%n", doc.getId(), doc.getLatestVersion());
-                    }
-
-                    return;
+        int numFound = mavenSearchResponse.getResponse().getNumFound();
+        if (numFound == 0) {
+            throw new Exception("No artifacts found for that component");
+        } else {
+            if (numFound > 1) {
+                System.err.println("There are too many artifacts: " + numFound + " artifacts found: ");
+                for (MavenSearchResponseDoc doc : mavenSearchResponse.getResponse().getDocs()) {
+                    System.err.printf("%s:%s%n", doc.getId(), doc.getLatestVersion());
                 }
+
+                throw new Exception("Too many artifacts found");
             }
-
-            String group = mavenSearchResponse.getResponse().getDocs().get(0).getGroup();
-            String artifact = mavenSearchResponse.getResponse().getDocs().get(0).getArtifact();
-            String version  = mavenSearchResponse.getResponse().getDocs().get(0).getLatestVersion();
-
-            String path = group.replace(".", "/");
-
-
-            String downloadUrl = String.format(
-                    "%s/classic/remotecontent?filepath=%s/%s/%s/%s-%s-package.tar.gz", DEFAULT_SEARCH_MIRROR, path,
-                    artifact, version, artifact, version);
-
-            System.out.println("Download link: " + downloadUrl);
-        } catch (Exception e) {
-            System.out.println("Failed: " + e.getMessage());
         }
+
+        String group = mavenSearchResponse.getResponse().getDocs().get(0).getGroup();
+        String artifact = mavenSearchResponse.getResponse().getDocs().get(0).getArtifact();
+        String version  = mavenSearchResponse.getResponse().getDocs().get(0).getLatestVersion();
+
+
+        return new PackageInfo(group, artifact, version);
     }
 }
