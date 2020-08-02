@@ -31,7 +31,9 @@ abstract class AWSLocalContainerService<T> implements AWSService<T> {
     private final LocalStackContainer container;
 
     public AWSLocalContainerService(LocalStackContainer.Service...services) {
-        this.container = new LocalStackContainer().withServices(services);
+        this.container = new LocalStackContainer()
+                .withServices(services)
+                .withEnv("KINESIS_LATENCY", "5000");
 
         container.start();
     }
