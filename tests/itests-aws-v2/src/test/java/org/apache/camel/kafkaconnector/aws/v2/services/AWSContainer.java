@@ -51,6 +51,8 @@ public class AWSContainer extends GenericContainer<AWSContainer> {
         withEnv("SERVICE", serviceList);
         withExposedPorts(SERVICE_PORT);
         addFixedExposedPort(SERVICE_PORT, SERVICE_PORT);
+
+        withEnv("KINESIS_LATENCY", "5000");
         waitingFor(Wait.forLogMessage(".*Ready\\.\n", 1));
     }
 
