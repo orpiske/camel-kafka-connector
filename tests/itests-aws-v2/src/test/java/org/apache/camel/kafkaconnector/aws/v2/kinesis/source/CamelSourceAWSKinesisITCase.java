@@ -153,6 +153,7 @@ public class CamelSourceAWSKinesisITCase extends AbstractKafkaTest {
     @BeforeEach
     public void setUp() {
         streamName = KINESIS_STREAM_BASE_NAME + "-" + TestUtils.randomWithRange(0, 100);
+//        streamName = KINESIS_STREAM_BASE_NAME;
 
         kinesisClient = awsService.getClient();
         received = 0;
