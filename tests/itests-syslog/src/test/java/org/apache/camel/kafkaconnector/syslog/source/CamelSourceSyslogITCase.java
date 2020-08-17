@@ -17,20 +17,17 @@
 
 package org.apache.camel.kafkaconnector.syslog.source;
 
-import org.apache.camel.CamelContext;
-import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.component.syslog.SyslogDataFormat;
-import org.apache.camel.component.syslog.netty.Rfc5425Encoder;
-import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.camel.kafkaconnector.common.AbstractKafkaTest;
 import org.apache.camel.kafkaconnector.common.ConnectorPropertyFactory;
 import org.apache.camel.kafkaconnector.common.clients.kafka.KafkaClient;
-import org.apache.camel.kafkaconnector.common.utils.NetworkUtils;
+import org.apache.camel.kafkaconnector.common.services.camel.CamelContextService;
+import org.apache.camel.kafkaconnector.common.services.camel.CamelContextServiceFactory;
 import org.apache.camel.kafkaconnector.common.utils.TestUtils;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -45,9 +42,11 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 @Testcontainers
 public class CamelSourceSyslogITCase extends AbstractKafkaTest {
-    private static final int FREE_PORT = NetworkUtils.getFreePort("localhost", NetworkUtils.Protocol.UDP);
-
     private static final Logger LOG = LoggerFactory.getLogger(CamelSourceSyslogITCase.class);
+
+    @RegisterExtension
+    public CamelContextService<SyslogTestConfiguratorCamel> camelContextService = CamelContextServiceFactory
+            .createCamelContextService(new SyslogTestConfiguratorCamel());
 
     private int received;
     private final int expect = 1;
@@ -62,26 +61,8 @@ public class CamelSourceSyslogITCase extends AbstractKafkaTest {
         received = 0;
     }
 
-    private void produceLogMessages(String protocol, String host, String port, String message) throws Exception {
-        CamelContext camelContext = new DefaultCamelContext();
-
-        try {
-            camelContext.getRegistry().bind("encoder", new Rfc5425Encoder());
-            camelContext.addRoutes(new RouteBuilder() {
-                @Override
-                public void configure() throws Exception {
-                    from("direct:test").marshal(new SyslogDataFormat()).to("netty:" + protocol + ":" + host + ":" + port + "?sync=false&encoders=#encoder&useByteBuf=true");
-                }
-            });
-
-            camelContext.start();
-            camelContext.createProducerTemplate().sendBody("direct:test", message);
-        } catch (Exception e) {
-            LOG.error("Failed to send log messages {} to : {}", message, "netty:" + protocol + ":" + host + ":" + port);
-            fail(e.getMessage());
-        } finally {
-            camelContext.stop();
-        }
+    private void produceLogMessages(String message) {
+        camelContextService.getContext().createProducerTemplate().sendBody("direct:test", message);
     }
 
     private <T> boolean checkRecord(ConsumerRecord<String, T> record) {
@@ -99,9 +80,7 @@ public class CamelSourceSyslogITCase extends AbstractKafkaTest {
         connectorPropertyFactory.log();
         getKafkaConnectService().initializeConnectorBlocking(connectorPropertyFactory, 1);
 
-        produceLogMessages(connectorPropertyFactory.getProperties().get("camel.source.path.protocol").toString(),
-                connectorPropertyFactory.getProperties().get("camel.source.path.host").toString(),
-                connectorPropertyFactory.getProperties().get("camel.source.path.port").toString(),
+        produceLogMessages(
                 "<13>1 2020-05-14T14:47:01.198+02:00 nathannever myapp - - [timeQuality tzKnown=\"1\" isSynced=\"1\" syncAccuracy=\"11266\"] FOO BAR!");
 
         LOG.debug("Creating the consumer ...");
@@ -116,12 +95,14 @@ public class CamelSourceSyslogITCase extends AbstractKafkaTest {
     @Timeout(90)
     public void testBasicSend() {
         try {
+            SyslogTestConfiguratorCamel configuratorCamel = camelContextService.getConfigurator();
+
             ConnectorPropertyFactory connectorPropertyFactory = CamelSyslogPropertyFactory
                     .basic()
                     .withKafkaTopic(TestUtils.getDefaultTestTopic(this.getClass()))
-                    .withHost("localhost")
-                    .withPort(FREE_PORT)
-                    .withProtocol("udp");
+                    .withHost(configuratorCamel.getHost())
+                    .withPort(configuratorCamel.getPort())
+                    .withProtocol(configuratorCamel.getProtocol());
 
             runBasicStringTest(connectorPropertyFactory);
         } catch (Exception e) {
