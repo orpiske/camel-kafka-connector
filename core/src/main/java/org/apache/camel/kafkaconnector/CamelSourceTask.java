@@ -161,7 +161,7 @@ public class CamelSourceTask extends SourceTask {
         }
 
         if (records.isEmpty()) {
-            return Collections.EMPTY_LIST;
+            return null;
         } else {
             return records;
         }
