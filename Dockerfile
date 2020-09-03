@@ -36,6 +36,7 @@ RUN yum install -y java-11-openjdk-headless && \
     chmod +x /opt/run-connector.sh
 
 FROM camel-kafka-connector-base as camel-kafka-connector
+EXPOSE 9010 8083
 COPY --from=buildimg /root/build/kafka /opt/kafka
 COPY --from=buildimg /root/build/camel-kafka-connectors /opt/camel-kafka-connectors
 
