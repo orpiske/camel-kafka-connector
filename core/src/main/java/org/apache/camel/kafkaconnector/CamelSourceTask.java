@@ -124,48 +124,46 @@ public class CamelSourceTask extends SourceTask {
         long startPollEpochMilli = Instant.now().toEpochMilli();
         long collectedRecords = 0L;
 
-        List<SourceRecord> records = new ArrayList<>();
+        List<SourceRecord> records = null;
         while (collectedRecords < maxBatchPollSize && (Instant.now().toEpochMilli() - startPollEpochMilli) < maxPollDuration) {
-            Exchange exchange = consumer.receiveNoWait();
-
-            if (exchange != null) {
-                LOG.debug("Received Exchange {} with Message {} from Endpoint {}", exchange.getExchangeId(), exchange.getMessage().getMessageId(), exchange.getFromEndpoint());
-
-                // TODO: see if there is a better way to use sourcePartition
-                // an sourceOffset
-                Map<String, String> sourcePartition = Collections.singletonMap("filename", exchange.getFromEndpoint().toString());
-                Map<String, String> sourceOffset = Collections.singletonMap("position", exchange.getExchangeId());
-
-                final Object messageHeaderKey = camelMessageHeaderKey != null ? exchange.getMessage().getHeader(camelMessageHeaderKey) : null;
-                final Object messageBodyValue = exchange.getMessage().getBody();
-
-                final Schema messageKeySchema = messageHeaderKey != null ? SchemaHelper.buildSchemaBuilderForType(messageHeaderKey) : null;
-                final Schema messageBodySchema = messageBodyValue != null ? SchemaHelper.buildSchemaBuilderForType(messageBodyValue) : null;
-
-                for (String singleTopic : topics) {
-                    SourceRecord record = new SourceRecord(sourcePartition, sourceOffset, singleTopic, messageKeySchema, messageHeaderKey, messageBodySchema, messageBodyValue);
-                    if (exchange.getMessage().hasHeaders()) {
-                        setAdditionalHeaders(record, exchange.getMessage().getHeaders(), HEADER_CAMEL_PREFIX);
-                    }
-                    if (exchange.hasProperties()) {
-                        setAdditionalHeaders(record, exchange.getProperties(), PROPERTY_CAMEL_PREFIX);
-                    }
-
-                    TaskHelper.logRecordContent(LOG, record, config);
-                    records.add(record);
-                }
-                collectedRecords++;
-            } else {
-                break;
+            Exchange exchange = consumer.receive(maxPollDuration / 10);
+            if (exchange == null) {
+                continue;
             }
+
+            if (records == null) {
+                records = new ArrayList<>();
+            }
+
+            LOG.debug("Received Exchange {} with Message {} from Endpoint {}", exchange.getExchangeId(), exchange.getMessage().getMessageId(), exchange.getFromEndpoint());
+
+            // TODO: see if there is a better way to use sourcePartition
+            // an sourceOffset
+            Map<String, String> sourcePartition = Collections.singletonMap("filename", exchange.getFromEndpoint().toString());
+            Map<String, String> sourceOffset = Collections.singletonMap("position", exchange.getExchangeId());
+
+            final Object messageHeaderKey = camelMessageHeaderKey != null ? exchange.getMessage().getHeader(camelMessageHeaderKey) : null;
+            final Object messageBodyValue = exchange.getMessage().getBody();
+
+            final Schema messageKeySchema = messageHeaderKey != null ? SchemaHelper.buildSchemaBuilderForType(messageHeaderKey) : null;
+            final Schema messageBodySchema = messageBodyValue != null ? SchemaHelper.buildSchemaBuilderForType(messageBodyValue) : null;
+
+            for (String singleTopic : topics) {
+                SourceRecord record = new SourceRecord(sourcePartition, sourceOffset, singleTopic, messageKeySchema, messageHeaderKey, messageBodySchema, messageBodyValue);
+                if (exchange.getMessage().hasHeaders()) {
+                    setAdditionalHeaders(record, exchange.getMessage().getHeaders(), HEADER_CAMEL_PREFIX);
+                }
+                if (exchange.hasProperties()) {
+                    setAdditionalHeaders(record, exchange.getProperties(), PROPERTY_CAMEL_PREFIX);
+                }
+
+                TaskHelper.logRecordContent(LOG, record, config);
+                records.add(record);
+            }
+            collectedRecords++;
         }
 
-        if (records.isEmpty()) {
-            return Collections.EMPTY_LIST;
-        } else {
-            return records;
-        }
-
+        return records;
     }
 
     @Override
