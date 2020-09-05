@@ -18,6 +18,9 @@
 package org.apache.camel.kafkaconnector.aws.v1.services;
 
 import java.util.Properties;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.regions.Regions;
@@ -27,14 +30,30 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testcontainers.containers.localstack.LocalStackContainer;
 
+import static org.junit.jupiter.api.Assertions.fail;
+
 abstract class AWSLocalContainerService<T> implements AWSService<T> {
     private static final Logger LOG = LoggerFactory.getLogger(AWSLocalContainerService.class);
     private final LocalStackContainer container;
+    private final Future<Boolean> containerStartFuture;
 
     public AWSLocalContainerService(LocalStackContainer.Service...services) {
         this.container = new LocalStackContainer().withServices(services);
 
-        container.start();
+        containerStartFuture = Executors.newCachedThreadPool().submit(this::asyncContainerStart);
+
+    }
+
+    private boolean asyncContainerStart() {
+        try {
+            container.start();
+
+            return true;
+        } catch (Throwable t) {
+            LOG.error("Unable to start AWS container: {}", t.getMessage(), t);
+        }
+
+        return false;
     }
 
 
@@ -44,7 +63,17 @@ abstract class AWSLocalContainerService<T> implements AWSService<T> {
 
     @Override
     public void initialize() {
-        LOG.info("AWS service running at address {}", getServiceEndpoint());
+        try {
+            if (containerStartFuture.get()) {
+                LOG.info("AWS service running at address {}", getServiceEndpoint());
+            } else {
+                fail("Failed to start the container: check the logs for previous error messages");
+            }
+        } catch (InterruptedException e) {
+            LOG.warn("Interrupted while starting the container", e);
+        } catch (ExecutionException e) {
+            LOG.warn("Failed to start the container: {}", e.getMessage(), e);
+        }
     }
 
     @Override
