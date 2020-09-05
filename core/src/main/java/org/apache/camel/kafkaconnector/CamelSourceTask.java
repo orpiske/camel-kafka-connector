@@ -119,15 +119,27 @@ public class CamelSourceTask extends SourceTask {
         }
     }
 
+    private long remaining(long startPollEpochMilli, long maxPollDuration)  {
+        // (7 - (15 - 15) = 7
+        // 7 - (15 - 10) =  2
+        // 7 -
+
+        return (maxPollDuration - (Instant.now().toEpochMilli() - startPollEpochMilli));
+    }
+
+
     @Override
     public synchronized List<SourceRecord> poll() {
-        long startPollEpochMilli = Instant.now().toEpochMilli();
+        final long startPollEpochMilli = Instant.now().toEpochMilli();
+
+        long remaining = remaining(startPollEpochMilli, maxPollDuration);
         long collectedRecords = 0L;
 
         List<SourceRecord> records = null;
-        while (collectedRecords < maxBatchPollSize && (Instant.now().toEpochMilli() - startPollEpochMilli) < maxPollDuration) {
-            Exchange exchange = consumer.receive(maxPollDuration / 10);
+        while (collectedRecords < maxBatchPollSize && remaining > 0) {
+            Exchange exchange = consumer.receive(remaining);
             if (exchange == null) {
+                remaining = remaining(startPollEpochMilli, maxPollDuration);
                 continue;
             }
 
@@ -161,6 +173,7 @@ public class CamelSourceTask extends SourceTask {
                 records.add(record);
             }
             collectedRecords++;
+            remaining = remaining(startPollEpochMilli, maxPollDuration);
         }
 
         return records;
