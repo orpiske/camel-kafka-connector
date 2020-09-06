@@ -20,6 +20,9 @@ package org.apache.camel.kafkaconnector.common.services.kafka;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.camel.kafkaconnector.common.PluginPathHelper;
@@ -34,10 +37,28 @@ public class EmbeddedKafkaService implements KafkaService {
     private static final long OFFSET_COMMIT_INTERVAL_MS = TimeUnit.SECONDS.toMillis(30);
 
     private EmbeddedConnectCluster cluster;
-    private boolean started;
+    private volatile boolean started;
+    private final Future<Boolean> serviceStartFuture;
 
     public EmbeddedKafkaService() {
-        buildCluster();
+        serviceStartFuture = Executors.newCachedThreadPool().submit(this::asyncServiceStart);
+    }
+
+    private boolean asyncServiceStart() {
+        try {
+            buildCluster();
+
+            LOG.info("Starting the embedded Kafka cluster");
+            cluster.start();
+            LOG.info("The embedded Kafka cluster has started");
+            started = true;
+
+            return true;
+        } catch (Throwable t) {
+            LOG.error("Unable to start AWS container: {}", t.getMessage(), t);
+        }
+
+        return false;
     }
 
     private void buildCluster() {
@@ -80,10 +101,15 @@ public class EmbeddedKafkaService implements KafkaService {
     @Override
     public void initialize() {
         if (!started) {
-            cluster.start();
-            started = true;
-
-            LOG.info("Kafka bootstrap server running at address {}", getBootstrapServers());
+            try {
+                if (serviceStartFuture.get()) {
+                    LOG.info("Kafka bootstrap server running at address {}", getBootstrapServers());
+                }
+            } catch (InterruptedException e) {
+                LOG.warn("Interrupted while starting the service", e);
+            } catch (ExecutionException e) {
+                LOG.warn("Failed to start the service: {}", e.getMessage(), e);
+            }
         }
     }
 

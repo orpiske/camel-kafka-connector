@@ -42,7 +42,7 @@ public abstract class AbstractKafkaTest {
 
         kafkaService = KafkaServiceFactory.createService();
 
-        kafkaService.initialize();
+//        kafkaService.initialize();
 
         kafkaConnectService = KafkaConnectRunnerFactory.createService(kafkaService);
     }

@@ -43,7 +43,11 @@ public class KafkaConnectEmbedded implements KafkaConnectService {
                     + (kafkaService == null ? "null" : kafkaService.getClass()));
         }
 
-        this.cluster = ((EmbeddedKafkaService) kafkaService).getCluster();
+        final EmbeddedKafkaService embeddedKafkaService = (EmbeddedKafkaService) kafkaService;
+
+        embeddedKafkaService.initialize();
+
+        this.cluster = embeddedKafkaService.getCluster();
     }
 
     private void convertProperty(Map<String, String> map, Object key, Object value) {
