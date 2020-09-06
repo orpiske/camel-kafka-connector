@@ -23,6 +23,7 @@ public final class AWSConfigs {
     public static final String REGION = "aws.region";
     public static final String AMAZON_AWS_HOST = "aws.host";
     public static final String PROTOCOL = "aws.protocol";
+    public static final String AWS_CONTAINER_VERSION = "aws-service.instance.local.container.version";
 
     private AWSConfigs() {
     }

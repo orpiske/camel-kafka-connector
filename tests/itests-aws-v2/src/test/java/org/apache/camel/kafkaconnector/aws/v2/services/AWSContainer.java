@@ -22,6 +22,7 @@ import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+import org.apache.camel.kafkaconnector.aws.common.AWSConfigs;
 import org.apache.camel.kafkaconnector.aws.v2.common.TestAWSCredentialsProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,10 +36,16 @@ import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
  behave as in runtime.
  */
 public class AWSContainer extends GenericContainer<AWSContainer> {
-    private static final String LOCALSTACK_CONTAINER = "localstack/localstack:0.11.3";
+    private static final String LOCALSTACK_CONTAINER;
 
     private static final Logger LOG = LoggerFactory.getLogger(AWSLocalContainerService.class);
     private static final int SERVICE_PORT = 4566;
+
+    static {
+        String localStackVersion = System.getProperty(AWSConfigs.AWS_CONTAINER_VERSION, "0.11.3");
+
+        LOCALSTACK_CONTAINER = "localstack/localstack:" + localStackVersion;
+    }
 
     public AWSContainer(Service...services) {
         super(LOCALSTACK_CONTAINER);

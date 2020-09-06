@@ -38,7 +38,12 @@ abstract class AWSLocalContainerService<T> implements AWSService<T> {
     private final Future<Boolean> containerStartFuture;
 
     public AWSLocalContainerService(LocalStackContainer.Service...services) {
-        this.container = new LocalStackContainer().withServices(services);
+        String localStackVersion = System.getProperty(AWSConfigs.AWS_CONTAINER_VERSION);
+        if (localStackVersion == null) {
+            this.container = new LocalStackContainer().withServices(services);
+        } else {
+            this.container = new LocalStackContainer(localStackVersion).withServices(services);
+        }
 
         containerStartFuture = Executors.newCachedThreadPool().submit(this::asyncContainerStart);
 
