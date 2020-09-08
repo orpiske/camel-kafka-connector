@@ -58,10 +58,13 @@ public class CamelSourceTaskTest {
         sendBatchOfRecords(sourceTask, size);
         List<SourceRecord> poll = sourceTask.poll();
 
-        assertEquals(size, poll.size());
+        assertEquals(1, poll.size());
         assertEquals(TOPIC_NAME, poll.get(0).topic());
         assertEquals(LoggingLevel.OFF.toString(), sourceTask.getCamelSourceConnectorConfig(props)
             .getString(CamelSourceConnectorConfig.CAMEL_SOURCE_CONTENT_LOG_LEVEL_CONF));
+
+        poll = sourceTask.poll();
+        assertEquals(1, poll.size());
 
         sourceTask.stop();
     }
