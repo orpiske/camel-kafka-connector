@@ -157,6 +157,10 @@ public class CamelSourceTask extends SourceTask {
             records.add(record);
         }
 
+        /*
+         TODO: remove the maxBatchPollSize
+         */
+
         return records;
     }
 
