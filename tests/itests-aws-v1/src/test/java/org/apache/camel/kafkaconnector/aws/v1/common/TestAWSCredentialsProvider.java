@@ -18,7 +18,7 @@ package org.apache.camel.kafkaconnector.aws.v1.common;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSCredentialsProvider;
-import org.apache.camel.kafkaconnector.aws.common.AWSConfigs;
+import org.apache.camel.test.infra.aws.common.AWSConfigs;
 
 public class TestAWSCredentialsProvider implements AWSCredentialsProvider {
     private static class TestAWSCredentials implements AWSCredentials {

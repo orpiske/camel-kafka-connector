@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import com.amazonaws.regions.Regions;
-import org.apache.camel.kafkaconnector.aws.common.AWSConfigs;
+import org.apache.camel.test.infra.aws.common.AWSConfigs;
 import org.apache.camel.kafkaconnector.common.EndpointUrlBuilder;
 import org.apache.camel.kafkaconnector.common.SourceConnectorPropertyFactory;
 

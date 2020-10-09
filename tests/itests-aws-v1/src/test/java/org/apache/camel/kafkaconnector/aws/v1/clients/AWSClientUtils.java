@@ -36,7 +36,7 @@ import com.amazonaws.services.sns.AmazonSNS;
 import com.amazonaws.services.sns.AmazonSNSClientBuilder;
 import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
-import org.apache.camel.kafkaconnector.aws.common.AWSConfigs;
+import org.apache.camel.test.infra.aws.common.AWSConfigs;
 import org.apache.camel.kafkaconnector.aws.v1.common.TestAWSCredentialsProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

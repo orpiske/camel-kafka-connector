@@ -23,11 +23,11 @@ import java.util.concurrent.ExecutionException;
 
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
-import org.apache.camel.kafkaconnector.aws.common.AWSCommon;
-import org.apache.camel.kafkaconnector.aws.common.AWSConfigs;
-import org.apache.camel.kafkaconnector.aws.common.services.AWSService;
+import org.apache.camel.test.infra.aws.common.AWSCommon;
+import org.apache.camel.test.infra.aws.common.services.AWSService;
+import org.apache.camel.test.infra.aws.common.AWSConfigs;
 import org.apache.camel.kafkaconnector.aws.v1.clients.AWSClientUtils;
-import org.apache.camel.kafkaconnector.aws.v1.services.AWSServiceFactory;
+import org.apache.camel.test.infra.aws.services.AWSServiceFactory;
 import org.apache.camel.kafkaconnector.common.AbstractKafkaTest;
 import org.apache.camel.kafkaconnector.common.ConnectorPropertyFactory;
 import org.apache.camel.kafkaconnector.common.clients.kafka.KafkaClient;
