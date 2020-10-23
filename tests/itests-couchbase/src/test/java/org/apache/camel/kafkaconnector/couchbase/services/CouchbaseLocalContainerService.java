@@ -77,6 +77,7 @@ public class CouchbaseLocalContainerService implements CouchbaseService {
 
     @Override
     public void initialize() {
+        LOG.debug("Starting Couchbase container");
         container.start();
 
         LOG.debug("Couchbase container running at {}", getConnectionString());

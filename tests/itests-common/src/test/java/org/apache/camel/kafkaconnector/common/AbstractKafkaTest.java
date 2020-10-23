@@ -28,10 +28,10 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @Testcontainers
 public abstract class AbstractKafkaTest {
     @RegisterExtension
-    public final KafkaService kafkaService;
+    public static KafkaService kafkaService;
 
     @RegisterExtension
-    public final KafkaConnectService kafkaConnectService;
+    public static KafkaConnectService kafkaConnectService;
 
     static {
         PropertyUtils.load();
