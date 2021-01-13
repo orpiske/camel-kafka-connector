@@ -37,8 +37,6 @@ import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testcontainers.containers.Container.ExecResult;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 
 import static org.apache.camel.kafkaconnector.salesforce.clients.SalesforceCliContainer.verifyCommand;
@@ -83,12 +81,10 @@ ALIAS  USERNAME              ORG ID              INSTANCE URL                 OA
 Note: after leaving the container you might need to adjust the permissions of the directory
 containing the sfdx configuration files (/path/to/sfdx).
 */
-@Testcontainers
 @EnabledIfSystemProperty(named = "it.test.salesforce.enable", matches = "true")
 public class CamelSourceSalesforceITCase extends AbstractKafkaTest  {
     private static final Logger LOG = LoggerFactory.getLogger(CamelSourceSalesforceITCase.class);
 
-    @Container
     public final SalesforceCliContainer container = new SalesforceCliContainer();
 
     private final String clientId = System.getProperty("it.test.salesforce.client.id");
