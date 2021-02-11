@@ -43,7 +43,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@Disabled(value = "Disabled due to issue #974")
+//@Disabled(value = "Disabled due to issue #974")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CamelSourceMongoDBITCase extends CamelSourceTestSupport {
     @RegisterExtension
