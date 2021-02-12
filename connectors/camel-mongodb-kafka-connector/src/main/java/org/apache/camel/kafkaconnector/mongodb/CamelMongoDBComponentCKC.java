@@ -17,32 +17,57 @@
 
 package org.apache.camel.kafkaconnector.mongodb;
 
+import java.util.Map;
+
 import com.mongodb.client.MongoClient;
 import org.apache.camel.CamelContext;
+import org.apache.camel.Endpoint;
 import org.apache.camel.component.mongodb.MongoDbComponent;
-import org.apache.camel.spi.Metadata;
+import org.apache.camel.component.mongodb.MongoDbEndpoint;
+import org.apache.camel.impl.DefaultCamelContext;
+import org.apache.camel.spi.BeanRepository;
+import org.apache.camel.spi.PropertyConfigurer;
+import org.apache.camel.support.CamelContextHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class CamelMongoDBComponentCKC extends MongoDbComponent {
     private static final Logger LOG = LoggerFactory.getLogger(CamelMongoDBComponentCKC.class);
 
-    @Metadata(autowired = true)
-    private MongoClient mongoConnection;
-
-    public CamelMongoDBComponentCKC() {
+    private void overrideMongoConnection(CamelContext context) {
         LOG.warn("Using the work-around component");
-        if (mongoConnection != null && super.getMongoConnection() != null) {
+        if (super.getMongoConnection() == null) {
+            LOG.warn("Overriding the mongo connection!");
+
+            MongoClient mongoConnection = CamelContextHelper.findByType(context, MongoClient.class);
+
+            if (mongoConnection == null) {
+                LOG.warn("Could not find a bean to override the mongo connection");
+            }
+
+            for (Endpoint eps : getCamelContext().getEndpoints()) {
+                LOG.warn("EP -> {}", eps.toString());
+            }
             super.setMongoConnection(mongoConnection);
+
+        } else {
+            LOG.warn("Overriding the mongo connection!");
         }
     }
 
-    public CamelMongoDBComponentCKC(CamelContext context) {
-        super(context);
-        LOG.warn("Using the work-around component (2)");
+    @Override
+    public PropertyConfigurer getEndpointPropertyConfigurer() {
+        LOG.warn("Creating the endpoint configurer");
+        return super.getEndpointPropertyConfigurer();
+    }
 
-        if (mongoConnection != null && super.getMongoConnection() != null) {
-            super.setMongoConnection(mongoConnection);
-        }
+    @Override
+    public PropertyConfigurer getComponentPropertyConfigurer() {
+        LOG.warn("Creating the property configurer");
+        PropertyConfigurer propertyConfigurer = super.getComponentPropertyConfigurer();
+
+        overrideMongoConnection(getCamelContext());
+
+        return propertyConfigurer;
     }
 }

@@ -34,6 +34,7 @@ public class CamelMongodbSinkTask extends CamelSinkTask {
     protected Map<String, String> getDefaultConfig() {
         return new HashMap<String, String>() {{
             put(CamelSinkConnectorConfig.CAMEL_SINK_COMPONENT_CONF, "mongodb");
+            put("camel.beans.mongodb", "#class:org.apache.camel.kafkaconnector.mongodb.CamelMongoDBComponentCKC");
         }};
     }
 }
