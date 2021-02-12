@@ -93,6 +93,7 @@ public class CamelSourceSyslogITCase extends CamelSourceTestSupport {
     @AfterEach
     public void tearDown() {
         camelContext.stop();
+        TestUtils.waitFor(camelContext::isStopped);
     }
 
     @Override
